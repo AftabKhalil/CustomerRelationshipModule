@@ -29,8 +29,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
 
                 <ul class="navbar-nav">
-                    <asp:Repeater runat="server" ID="menu"
-                        DataSourceID="SiteMapDataSource1">
+                    <asp:Repeater runat="server" ID="menu" OnItemDataBound="rptMenu_ItemDataBound">
                         <ItemTemplate>
                             <li class="nav-item active">
                                 <asp:HyperLink runat="server" CssClass="nav-link" NavigateUrl='<%# Eval("Url") %>'>' <%# Eval("Title") %></asp:HyperLink>
@@ -45,6 +44,7 @@
         <div id="navigation">
         </div>
     </form>
+
     <asp:ContentPlaceHolder ID="MainContent" runat="server">
     </asp:ContentPlaceHolder>
 </body>

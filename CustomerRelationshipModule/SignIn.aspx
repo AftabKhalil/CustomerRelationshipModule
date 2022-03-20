@@ -48,6 +48,7 @@
                         alert("Not able to SignIn");
                         sessionStorage.removeItem('currentUserId');
                         sessionStorage.removeItem('currentUserType');
+                        location.reload();
                         return;
                     }
                     else {

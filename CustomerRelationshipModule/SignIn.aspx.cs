@@ -32,7 +32,17 @@ namespace CustomerRelationshipModule
                 var systemId = "";
 
                 if (isCustomer.ToLower() == "false")
+                {
                     systemId = new EmployeeHelper().GetSystemId(emailId, password);
+                    CustomerRelationshipModule.Site.currentUserId = systemId;
+                    CustomerRelationshipModule.Site.currentUserType = "Employee";
+                }
+                else
+                {
+                    systemId = new CustomerHelper().GetSystemId(emailId, password);
+                    CustomerRelationshipModule.Site.currentUserId = systemId;
+                    CustomerRelationshipModule.Site.currentUserType = "Customer";
+                }
 
                 if (string.IsNullOrEmpty(systemId))
                 {
