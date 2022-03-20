@@ -17,6 +17,9 @@
                     <label class="form-check-label" for="exampleCheck1">I am a Customer</label>
                 </div>
                 <span class="btn btn-primary" onclick="getSystemId()">Submit</span>
+
+
+
             </form>
         </div>
     </div>
