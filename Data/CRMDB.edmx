@@ -1,0 +1,416 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CRMModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar(max)" Nullable="false" />
+          <Property Name="contact_no" Type="varchar" MaxLength="50" />
+          <Property Name="email_id" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="system_id" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar(max)" Nullable="false" />
+          <Property Name="position" Type="int" Nullable="false" />
+          <Property Name="salary" Type="int" Nullable="false" />
+          <Property Name="previous_expirence_in_months" Type="int" Nullable="false" />
+          <Property Name="contact_no" Type="varchar" MaxLength="50" />
+          <Property Name="email_id" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="system_id" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FeedBack">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="task_assignment_id" Type="int" Nullable="false" />
+          <Property Name="message" Type="varchar(max)" Nullable="false" />
+          <Property Name="sentiment" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar(max)" Nullable="false" />
+          <Property Name="budget" Type="int" Nullable="false" />
+          <Property Name="customer_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar(max)" Nullable="false" />
+          <Property Name="project_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TaskAssignment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="task_id" Type="int" Nullable="false" />
+          <Property Name="employee_id" Type="int" Nullable="false" />
+          <Property Name="employee_role" Type="int" Nullable="false" />
+          <Property Name="task_type" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Feedback_TaskAssignment">
+          <End Role="TaskAssignment" Type="Self.TaskAssignment" Multiplicity="1" />
+          <End Role="FeedBack" Type="Self.FeedBack" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TaskAssignment">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="FeedBack">
+              <PropertyRef Name="task_assignment_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Project_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Task_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="Task" Type="Self.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="project_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TaskAssignment_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="TaskAssignment" Type="Self.TaskAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="TaskAssignment">
+              <PropertyRef Name="task_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TaskAssignment_Task">
+          <End Role="Task" Type="Self.Task" Multiplicity="1" />
+          <End Role="TaskAssignment" Type="Self.TaskAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="TaskAssignment">
+              <PropertyRef Name="task_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CRMModelStoreContainer">
+          <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FeedBack" EntityType="Self.FeedBack" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Task" EntityType="Self.Task" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TaskAssignment" EntityType="Self.TaskAssignment" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Feedback_TaskAssignment" Association="Self.FK_Feedback_TaskAssignment">
+            <End Role="TaskAssignment" EntitySet="TaskAssignment" />
+            <End Role="FeedBack" EntitySet="FeedBack" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Project_Customer" Association="Self.FK_Project_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Project" EntitySet="Project" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Task_Project" Association="Self.FK_Task_Project">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TaskAssignment_Employee" Association="Self.FK_TaskAssignment_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="TaskAssignment" EntitySet="TaskAssignment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TaskAssignment_Task" Association="Self.FK_TaskAssignment_Task">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="TaskAssignment" EntitySet="TaskAssignment" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CRMModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="contact_no" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="email_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="system_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Projects" Relationship="Self.FK_Project_Customer" FromRole="Customer" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="position" Type="Int32" Nullable="false" />
+          <Property Name="salary" Type="Int32" Nullable="false" />
+          <Property Name="previous_expirence_in_months" Type="Int32" Nullable="false" />
+          <Property Name="contact_no" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="email_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="system_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="TaskAssignments" Relationship="Self.FK_TaskAssignment_Employee" FromRole="Employee" ToRole="TaskAssignment" />
+        </EntityType>
+        <EntityType Name="FeedBack">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="task_assignment_id" Type="Int32" Nullable="false" />
+          <Property Name="message" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="sentiment" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TaskAssignment" Relationship="Self.FK_Feedback_TaskAssignment" FromRole="FeedBack" ToRole="TaskAssignment" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="budget" Type="Int32" Nullable="false" />
+          <Property Name="customer_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_Project_Customer" FromRole="Project" ToRole="Customer" />
+          <NavigationProperty Name="Tasks" Relationship="Self.FK_Task_Project" FromRole="Project" ToRole="Task" />
+        </EntityType>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="project_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Project" Relationship="Self.FK_Task_Project" FromRole="Task" ToRole="Project" />
+          <NavigationProperty Name="TaskAssignments" Relationship="Self.FK_TaskAssignment_Task" FromRole="Task" ToRole="TaskAssignment" />
+        </EntityType>
+        <EntityType Name="TaskAssignment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="task_id" Type="Int32" Nullable="false" />
+          <Property Name="employee_id" Type="Int32" Nullable="false" />
+          <Property Name="employee_role" Type="Int32" Nullable="false" />
+          <Property Name="task_type" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_TaskAssignment_Employee" FromRole="TaskAssignment" ToRole="Employee" />
+          <NavigationProperty Name="FeedBacks" Relationship="Self.FK_Feedback_TaskAssignment" FromRole="TaskAssignment" ToRole="FeedBack" />
+          <NavigationProperty Name="Task" Relationship="Self.FK_TaskAssignment_Task" FromRole="TaskAssignment" ToRole="Task" />
+        </EntityType>
+        <Association Name="FK_Project_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TaskAssignment_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="TaskAssignment" Type="Self.TaskAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="TaskAssignment">
+              <PropertyRef Name="task_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Feedback_TaskAssignment">
+          <End Role="TaskAssignment" Type="Self.TaskAssignment" Multiplicity="1" />
+          <End Role="FeedBack" Type="Self.FeedBack" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TaskAssignment">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="FeedBack">
+              <PropertyRef Name="task_assignment_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Task_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="Task" Type="Self.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="project_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TaskAssignment_Task">
+          <End Role="Task" Type="Self.Task" Multiplicity="1" />
+          <End Role="TaskAssignment" Type="Self.TaskAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="TaskAssignment">
+              <PropertyRef Name="task_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CRMEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="Employees" EntityType="Self.Employee" />
+          <EntitySet Name="FeedBacks" EntityType="Self.FeedBack" />
+          <EntitySet Name="Projects" EntityType="Self.Project" />
+          <EntitySet Name="Tasks" EntityType="Self.Task" />
+          <EntitySet Name="TaskAssignments" EntityType="Self.TaskAssignment" />
+          <AssociationSet Name="FK_Project_Customer" Association="Self.FK_Project_Customer">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Project" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TaskAssignment_Employee" Association="Self.FK_TaskAssignment_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="TaskAssignment" EntitySet="TaskAssignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Feedback_TaskAssignment" Association="Self.FK_Feedback_TaskAssignment">
+            <End Role="TaskAssignment" EntitySet="TaskAssignments" />
+            <End Role="FeedBack" EntitySet="FeedBacks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Task_Project" Association="Self.FK_Task_Project">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="Task" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TaskAssignment_Task" Association="Self.FK_TaskAssignment_Task">
+            <End Role="Task" EntitySet="Tasks" />
+            <End Role="TaskAssignment" EntitySet="TaskAssignments" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CRMModelStoreContainer" CdmEntityContainer="CRMEntities">
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="CRMModel.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="contact_no" ColumnName="contact_no" />
+                <ScalarProperty Name="email_id" ColumnName="email_id" />
+                <ScalarProperty Name="system_id" ColumnName="system_id" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="CRMModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="position" ColumnName="position" />
+                <ScalarProperty Name="salary" ColumnName="salary" />
+                <ScalarProperty Name="previous_expirence_in_months" ColumnName="previous_expirence_in_months" />
+                <ScalarProperty Name="contact_no" ColumnName="contact_no" />
+                <ScalarProperty Name="email_id" ColumnName="email_id" />
+                <ScalarProperty Name="system_id" ColumnName="system_id" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FeedBacks">
+            <EntityTypeMapping TypeName="CRMModel.FeedBack">
+              <MappingFragment StoreEntitySet="FeedBack">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="task_assignment_id" ColumnName="task_assignment_id" />
+                <ScalarProperty Name="message" ColumnName="message" />
+                <ScalarProperty Name="sentiment" ColumnName="sentiment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projects">
+            <EntityTypeMapping TypeName="CRMModel.Project">
+              <MappingFragment StoreEntitySet="Project">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="budget" ColumnName="budget" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tasks">
+            <EntityTypeMapping TypeName="CRMModel.Task">
+              <MappingFragment StoreEntitySet="Task">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="project_id" ColumnName="project_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TaskAssignments">
+            <EntityTypeMapping TypeName="CRMModel.TaskAssignment">
+              <MappingFragment StoreEntitySet="TaskAssignment">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="task_id" ColumnName="task_id" />
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+                <ScalarProperty Name="employee_role" ColumnName="employee_role" />
+                <ScalarProperty Name="task_type" ColumnName="task_type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
