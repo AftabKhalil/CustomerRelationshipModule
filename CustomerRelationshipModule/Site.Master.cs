@@ -39,10 +39,16 @@ namespace CustomerRelationshipModule
                                 var mainMenu = new { id = "menuitem-" + id++, url = node.Url, title = node.Title, icon = node.ResourceKey, hasChuild = false, ChildMenu = new List<dynamic>() };
                                 menulist.Add(mainMenu);
                             }
+                            else if (node["module"].Contains("Employee"))
+                            {
+                                var mainMenu = new { id = "menuitem-" + id++, url = node.Url, title = node.Title, icon = node.ResourceKey, hasChuild = false, ChildMenu = new List<dynamic>() };
+                                menulist.Add(mainMenu);
+                            }
                         }
-                        else
+                        else if (node["module"].Contains("Customer"))
                         {
-
+                            var mainMenu = new { id = "menuitem-" + id++, url = node.Url, title = node.Title, icon = node.ResourceKey, hasChuild = false, ChildMenu = new List<dynamic>() };
+                            menulist.Add(mainMenu);
                         }
                     }
                 }

@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
   <siteMapNode roles="*">
-    <siteMapNode url="Home.aspx" title="Home"  module="Admin|Emplyee|Customer"/>
+    <siteMapNode url="Home.aspx" title="Home"  module="Admin|Employee|Customer"/>
     <siteMapNode url="SignIn.aspx" title="SignIn"  module="*"/>
     <siteMapNode url="Employees.aspx" title="Employees"  module="Admin" />
-    <siteMapNode url ="Employee.aspx" title="Add Employee" module=""/>
+    <siteMapNode url ="Employee.aspx" title="Add Employee" module="Admin"/>
     <siteMapNode url ="Customers.aspx" title="Customers" module="Admin" />
-    <siteMapNode url ="Customer.aspx" title="ADD Customer" module=""/>
+    <siteMapNode url ="Customer.aspx" title="Add Customer" module="Admin"/>
+    <siteMapNode url ="Projects.aspx" title="Projects" module="Admin|Customer"/>
   </siteMapNode>
 </siteMap>

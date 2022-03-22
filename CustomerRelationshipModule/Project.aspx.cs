@@ -10,17 +10,17 @@ using System.Web.UI.WebControls;
 
 namespace CustomerRelationshipModule
 {
-    public partial class Home : System.Web.UI.Page
+    public partial class Project : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
 
         }
 
-        #region GetName
+        #region Save
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
-        public static object GetName()
+        public static object Save()
         {
             var result = new Models.AjaxResponse<string>();
             try
@@ -28,33 +28,26 @@ namespace CustomerRelationshipModule
                 var currentUserId = HttpContext.Current.Request.Params["currentUserId"];
                 var currentUserTpe = HttpContext.Current.Request.Params["currentUserType"];
 
-                if (currentUserTpe == "Employee")
+                var projectName = HttpContext.Current.Request.Params["projectName"];
+                var budget = HttpContext.Current.Request.Params["budget"];
+                var customerId = HttpContext.Current.Request.Params["customer"];
+                var mode = HttpContext.Current.Request.Params["mode"];
+
+                if (!new EmployeeHelper().IsAdmin(currentUserId))
                 {
-                    var employee = new EmployeeHelper().GetEmployee(currentUserId);
-                    if (employee == null)
-                    {
-                        throw new Exception("No emplyee with this user Id exists in system");
-                    }
-                    else
-                    {
-                        result.data = employee.name;
-                    }
+                    throw new Exception("Only Admin user can add/edit new projects");
                 }
-                else if (currentUserTpe == "Customer")
+
+                if (mode == "UPDATE")
                 {
-                    var customer = new CustomerHelper().GetCustomer(currentUserId);
-                    if (customer == null)
-                    {
-                        throw new Exception("No emplyee with this user Id exists in system");
-                    }
-                    else
-                    {
-                        result.data = customer.name;
-                    }
+                    var projectId = HttpContext.Current.Request.Params["projectId"];
+                    var project = new ProjectHelper().Update(int.Parse(projectId), projectName, int.Parse(budget), int.Parse(customerId));
+                    result.data = $"Project updated with name {project.name}";
                 }
                 else
                 {
-                    throw new Exception("User type not supported");
+                    var project = new ProjectHelper().Add(projectName, int.Parse(budget), int.Parse(customerId));
+                    result.data = $"New project added with name {project.name}";
                 }
                 result.isSuccess = true;
             }
