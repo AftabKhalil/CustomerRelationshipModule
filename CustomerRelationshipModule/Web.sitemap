@@ -8,5 +8,6 @@
     <siteMapNode url ="Customers.aspx" title="Customers" module="Admin" />
     <siteMapNode url ="Customer.aspx" title="Add Customer" module="Admin"/>
     <siteMapNode url ="Projects.aspx" title="Projects" module="Admin|Customer"/>
+    <siteMapNode url ="Project.aspx" title="Add Project" module="Admin"/>
   </siteMapNode>
 </siteMap>
