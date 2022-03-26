@@ -95,8 +95,32 @@ namespace CustomerRelationshipModule
                 var contactNo = HttpContext.Current.Request.Params["contactNo"];
                 var expirence = int.Parse(HttpContext.Current.Request.Params["expirence"]);
                 var position = int.Parse(HttpContext.Current.Request.Params["position"]);
-                var salary = int.Parse(HttpContext.Current.Request.Params["salary"]);
+                var salary = HttpContext.Current.Request.Params["salary"];
                 var password = HttpContext.Current.Request.Params["password"];
+
+
+                if (string.IsNullOrEmpty(name))
+                {
+                    throw new Exception("Name is invalid");
+                }
+               
+                if (!int.TryParse(salary,out int resultsalary))
+                {
+                    throw new Exception("invalid salary");
+                }
+                
+                if (string.IsNullOrEmpty(email) || !email.Contains("@") || email.Length < 3)
+                {
+                    throw new Exception("Email is invalid");
+                }
+                if (!int.TryParse(contactNo, out int resultcontactNo))
+                {
+                    throw new Exception("Contactno is invalid");
+                }
+                if (string.IsNullOrEmpty(password))
+                {
+                    throw new Exception("password is invalid");
+                }
 
                 var mode = HttpContext.Current.Request.Params["mode"];
                 if (!new EmployeeHelper().IsAdmin(currentUserId))
@@ -112,7 +136,7 @@ namespace CustomerRelationshipModule
                     {
                         throw new Exception($"Employee with same email: {email} alreay exists, cant update email");
                     }
-                    var employee = new EmployeeHelper().Update(employeeId, name, position, salary, expirence, contactNo, email, password);
+                    var employee = new EmployeeHelper().Update(employeeId, name, position, int.Parse(salary), expirence, contactNo, email, password);
                     result.data = $"Emplyee updated with system Id: {employee.system_id}";
                 }
                 else
@@ -122,7 +146,7 @@ namespace CustomerRelationshipModule
                         throw new Exception($"Employee with same email: {email} alreay exists.");
                     }
 
-                    var employee = new EmployeeHelper().Add(name, position, salary, expirence, contactNo, email, password);
+                    var employee = new EmployeeHelper().Add(name, position, int.Parse(salary), expirence, contactNo, email, password);
                     result.data = $"New emplyee added with system Id: {employee.system_id}";
                 }
                 result.isSuccess = true;

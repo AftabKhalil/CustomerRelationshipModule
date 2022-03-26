@@ -5,6 +5,7 @@
 <html>
 <head runat="server">
     <title></title>
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />  
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 
@@ -20,8 +21,11 @@
 
     <script src="Assits/Custom.js"></script>
 </head>
-<body>
+<body >
+    
     <form runat="server">
+             
+
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -43,6 +47,7 @@
         </nav>
         <div id="navigation">
         </div>
+        
     </form>
 
     <asp:ContentPlaceHolder ID="MainContent" runat="server">

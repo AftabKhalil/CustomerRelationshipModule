@@ -101,7 +101,7 @@ namespace CustomerRelationshipModule
                 {
                     throw new Exception("Email is invalid");
                 }
-                if (!int.TryParse(contactNo, out int resultcontactNo))
+                if (!int.TryParse(contactNo, out int resultcontactNo) || contactNo!="")
                 {
                     throw new Exception("Contactno is invalid");
                 }
