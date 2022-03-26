@@ -43,10 +43,10 @@ namespace CustomerRelationshipModule
                             id = customer.id,
                             contactNo = customer.contact_no,
                             emailId = customer.email_id,
-                            
+
                             name = customer.name,
                             password = customer.password,
-                           
+
                             systemId = customer.system_id,
                         };
                     }
@@ -93,6 +93,24 @@ namespace CustomerRelationshipModule
                 var contactNo = HttpContext.Current.Request.Params["contactNo"];
                 var password = HttpContext.Current.Request.Params["password"];
 
+                if (string.IsNullOrEmpty(name))
+                {
+                    throw new Exception("Name is invalid");
+                }
+                if (string.IsNullOrEmpty(email) || !email.Contains("@") || email.Length < 3)
+                {
+                    throw new Exception("Email is invalid");
+                }
+                if (!int.TryParse(contactNo, out int resultcontactNo))
+                {
+                    throw new Exception("Contactno is invalid");
+                }
+                if (string.IsNullOrEmpty(password))
+                {
+                    throw new Exception("password is invalid");
+                }
+
+
                 var mode = HttpContext.Current.Request.Params["mode"];
                 if (!new EmployeeHelper().IsAdmin(currentUserId))
                 {
@@ -107,7 +125,7 @@ namespace CustomerRelationshipModule
                     {
                         throw new Exception($"Customer with same email: {email} alreay exists, cant update email");
                     }
-                    var customer = new CustomerHelper().Update(customerId,name, contactNo, email);
+                    var customer = new CustomerHelper().Update(customerId, name, contactNo, email);
                     result.data = $"Customer updated with system Id: {customer.system_id}";
                 }
                 else
@@ -117,7 +135,7 @@ namespace CustomerRelationshipModule
                         throw new Exception($"Employee with same email: {email} alreay exists.");
                     }
 
-                    var customer = new CustomerHelper().Add(name, contactNo, email,password);
+                    var customer = new CustomerHelper().Add(name, contactNo, email, password);
                     result.data = $"New emplyee added with system Id: {customer.system_id}";
                 }
                 result.isSuccess = true;

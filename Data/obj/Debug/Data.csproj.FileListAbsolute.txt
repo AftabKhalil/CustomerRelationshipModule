@@ -67,3 +67,17 @@ C:\Users\akhalil\Documents\FYP2\CustomerRelationshipModule\Data\obj\Debug\Data.c
 C:\Users\akhalil\Documents\FYP2\CustomerRelationshipModule\Data\obj\Debug\Data.csproj.CopyComplete
 C:\Users\akhalil\Documents\FYP2\CustomerRelationshipModule\Data\obj\Debug\Data.dll
 C:\Users\akhalil\Documents\FYP2\CustomerRelationshipModule\Data\obj\Debug\Data.pdb
+C:\Users\Sheik\Documents\CustomerRelationshipModule\Data\obj\Debug\Data.csproj.CoreCompileInputs.cache
+C:\Users\Sheik\Documents\CustomerRelationshipModule\Data\bin\Debug\Data.dll.config
+C:\Users\Sheik\Documents\CustomerRelationshipModule\Data\bin\Debug\Data.dll
+C:\Users\Sheik\Documents\CustomerRelationshipModule\Data\bin\Debug\Data.pdb
+C:\Users\Sheik\Documents\CustomerRelationshipModule\Data\bin\Debug\Common.dll
+C:\Users\Sheik\Documents\CustomerRelationshipModule\Data\bin\Debug\EntityFramework.dll
+C:\Users\Sheik\Documents\CustomerRelationshipModule\Data\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Sheik\Documents\CustomerRelationshipModule\Data\bin\Debug\Common.pdb
+C:\Users\Sheik\Documents\CustomerRelationshipModule\Data\bin\Debug\Common.dll.config
+C:\Users\Sheik\Documents\CustomerRelationshipModule\Data\bin\Debug\EntityFramework.xml
+C:\Users\Sheik\Documents\CustomerRelationshipModule\Data\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Sheik\Documents\CustomerRelationshipModule\Data\obj\Debug\Data.csproj.CopyComplete
+C:\Users\Sheik\Documents\CustomerRelationshipModule\Data\obj\Debug\Data.dll
+C:\Users\Sheik\Documents\CustomerRelationshipModule\Data\obj\Debug\Data.pdb
