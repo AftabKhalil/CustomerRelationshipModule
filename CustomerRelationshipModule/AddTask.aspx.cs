@@ -1,6 +1,4 @@
-﻿using Common.Utils;
-using CustomerRelationshipModule.Models;
-using Data.ORMHelper;
+﻿using Data.ORMHelper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,44 +10,53 @@ using System.Web.UI.WebControls;
 
 namespace CustomerRelationshipModule
 {
-    public partial class Employees : System.Web.UI.Page
+    public partial class AddTask : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
 
         }
 
-        #region GetEmployees
+        #region GetTask
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
-        public static object GetEmployees()
+        public static object GetTask()
         {
-            int.TryParse(HttpContext.Current.Request.Params["draw"], out int draw);
-            var result = new DataTableResponse<Models.Employee>(draw);
+            var result = new Models.AjaxResponse<Models.Task>();
             try
             {
                 var currentUserId = HttpContext.Current.Request.Params["currentUserId"];
+                var currentUserTpe = HttpContext.Current.Request.Params["currentUserType"];
+                var TaskId = int.Parse(HttpContext.Current.Request.Params["TaskId"]);
 
-                if (!new EmployeeHelper().IsAdmin(currentUserId))
+                if (currentUserTpe == "Employee")
+                {
+                    if (new EmployeeHelper().IsAdmin(currentUserId))
+                    {
+                        var Task = new TaskHelper().GetTask(TaskId);
+                        result.data = new Models.Task()
+                        {
+                            ID = Task.id,
+
+                            Name = Task.name,
+                            ProjectName = Task.Project.name,
+                            ProjectId = Task.project_id,
+                        };
+                    }
+                    else
+                    {
+                        throw new Exception("Only admin or same user can view this page");
+                    }
+
+                }
+                else if (currentUserTpe == "Customer")
                 {
                     throw new Exception("Only admin user can view this page");
                 }
-
-                var emplyess = new EmployeeHelper().GetEmployees();
-                List<Models.Employee> converted = emplyess.ConvertAll(x => new Models.Employee()
+                else
                 {
-                    id = x.id,
-
-                    name = x.name,
-                    position = EnumExtension.ToEnum<EmployeeType>(x.position).ToString(),
-                    salary = x.salary,
-                    expirence = x.previous_expirence_in_months,
-                    contactNo = x.contact_no,
-                    emailId = x.email_id,
-                    systemId = x.system_id,
-                });
-
-                result.data = converted;
+                    throw new Exception("User type not supported");
+                }
                 result.isSuccess = true;
             }
             catch (Exception ex)
@@ -62,33 +69,38 @@ namespace CustomerRelationshipModule
             return result;
         }
         #endregion
-
-        #region DeleteEmployee
+        #region Save
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
-        public static object DeleteEmployee()
+        public static object Save()
         {
             var result = new Models.AjaxResponse<string>();
             try
             {
                 var currentUserId = HttpContext.Current.Request.Params["currentUserId"];
                 var currentUserTpe = HttpContext.Current.Request.Params["currentUserType"];
-                var employeeId = HttpContext.Current.Request.Params["employeeId"];
+
+                var TaskName = HttpContext.Current.Request.Params["taskname"];
+                var projectId = HttpContext.Current.Request.Params["project"];
+                var mode = HttpContext.Current.Request.Params["mode"];
 
                 if (!new EmployeeHelper().IsAdmin(currentUserId))
                 {
-                    throw new Exception("Only admin user can delete employees");
+                    throw new Exception("Only Admin user can add/edit new projects");
                 }
 
-                if (new EmployeeHelper().IsAdmin(employeeId) && new EmployeeHelper().GetAdminCount() == 1)
+                if (mode == "UPDATE")
                 {
-                    throw new Exception("Cant delete the one and only Admin user");
+                    var taskId = HttpContext.Current.Request.Params["taskId"];
+                    var task = new TaskHelper().Update(int.Parse(taskId), TaskName, int.Parse(projectId));
+                    result.data = $"task updated with name {task.name}";
                 }
-
-                new EmployeeHelper().DeleteEmployee(employeeId);
+                else
+                {
+                    var task = new TaskHelper().Add(TaskName,  int.Parse(projectId));
+                    result.data = $"New task added with name {task.name}";
+                }
                 result.isSuccess = true;
-        
-                result.data = $"Emplyee with system id {employeeId} is deleted.";
             }
             catch (Exception ex)
             {

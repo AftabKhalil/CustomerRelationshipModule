@@ -123,7 +123,8 @@ namespace CustomerRelationshipModule
                 }
 
                 var mode = HttpContext.Current.Request.Params["mode"];
-                if (!new EmployeeHelper().IsAdmin(currentUserId))
+                if (!new EmployeeHelper().IsAdmin(currentUserId)) 
+
                 {
                     throw new Exception("Only admin user can add/edit new employess");
                 }

@@ -49,7 +49,7 @@ namespace CustomerRelationshipModule
                     Name = x.name,
                     Budget = x.budget,
                     CustomerName = x.Customer.name
-                });
+               });
 
                 result.data = converted;
                 result.isSuccess = true;
@@ -62,35 +62,31 @@ namespace CustomerRelationshipModule
                 result.error = errorMessage;
             }
             return result;
-            #endregion
+            
         }
-        /*#endregion
-        
-        #region DeleteEmployee
+        #endregion
+
+
+        #region DeleteProject
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
-        public static object DeleteEmployee()
+        public static object DeleteProject()
         {
             var result = new Models.AjaxResponse<string>();
             try
             {
                 var currentUserId = HttpContext.Current.Request.Params["currentUserId"];
                 var currentUserTpe = HttpContext.Current.Request.Params["currentUserType"];
-                var employeeId = HttpContext.Current.Request.Params["employeeId"];
+                var projectId = int.Parse(HttpContext.Current.Request.Params["projectId"]);
 
                 if (!new EmployeeHelper().IsAdmin(currentUserId))
                 {
                     throw new Exception("Only admin user can delete employees");
                 }
 
-                if (new EmployeeHelper().IsAdmin(employeeId) && new EmployeeHelper().GetAdminCount() == 1)
-                {
-                    throw new Exception("Cant delete the one and only Admin user");
-                }
-
-                new EmployeeHelper().DeleteEmployee(employeeId);
+                new ProjectHelper().DeleteProject(projectId);
                 result.isSuccess = true;
-                result.data = $"Emplyee with system id {employeeId} is deleted.";
+                result.data = $"customer with system id {projectId} is deleted.";
             }
             catch (Exception ex)
             {
@@ -102,6 +98,5 @@ namespace CustomerRelationshipModule
             return result;
         }
         #endregion
-        */
     }
 }

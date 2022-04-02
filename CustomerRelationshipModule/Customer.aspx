@@ -36,7 +36,7 @@
         var mode = (customerId == null || customerId == "") ? "CREATE" : "UPDATE";
 
         if (mode == "UPDATE") {
-            
+            debugger;
             $.ajax({
                 url: "Customer.aspx/GetCustomer",
                 contentType: "application/json",

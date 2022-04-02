@@ -46,7 +46,7 @@ namespace CustomerRelationshipModule
 
                             name = customer.name,
                             password = customer.password,
-
+                            
                             systemId = customer.system_id,
                         };
                     }
@@ -101,7 +101,7 @@ namespace CustomerRelationshipModule
                 {
                     throw new Exception("Email is invalid");
                 }
-                if (!int.TryParse(contactNo, out int resultcontactNo) || contactNo!="")
+                if (!int.TryParse(contactNo, out int resultcontactNo))
                 {
                     throw new Exception("Contactno is invalid");
                 }

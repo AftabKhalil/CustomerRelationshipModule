@@ -17,6 +17,62 @@ namespace CustomerRelationshipModule
 
         }
 
+        #region GetProject
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+        public static object GetProject()
+        
+        {
+            var result = new Models.AjaxResponse<Models.Project>();
+            try
+            {
+                var currentUserId = HttpContext.Current.Request.Params["currentUserId"];
+                var currentUserTpe = HttpContext.Current.Request.Params["currentUserType"];
+                var projectId = int.Parse(HttpContext.Current.Request.Params["projectId"]);
+
+                if (currentUserTpe == "Employee")
+                {
+                    if (new EmployeeHelper().IsAdmin(currentUserId))
+                    {
+                        var project = new ProjectHelper().GetProject(projectId);
+
+                        result.data = new Models.Project()
+                        {
+                            ID = project.id,
+
+                            Name = project.name,
+                            Budget = project.budget,
+                            CustomerName = project.Customer.name,
+                            CustomerId=project.customer_id,
+                          
+                        };
+                    }
+                    else
+                    {
+                        throw new Exception("Only admin can view this page");
+                    }
+
+                }
+                else if (currentUserTpe == "Customer")
+                {
+                    throw new Exception("Only admin user can view this page");
+                }
+                else
+                {
+                    throw new Exception("User type not supported");
+                }
+                result.isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                //need to escape the "\" in your string (turning it into a double-"\"), otherwise it will become a newline in the JSON source, not the JSON data
+                var errorMessage = ex.Message.Replace("\n", "\\n").Replace("\r", "\\r");
+                result.isSuccess = false;
+                result.error = errorMessage;
+            }
+            return result;
+        }
+        #endregion
         #region Save
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
@@ -28,7 +84,7 @@ namespace CustomerRelationshipModule
                 var currentUserId = HttpContext.Current.Request.Params["currentUserId"];
                 var currentUserTpe = HttpContext.Current.Request.Params["currentUserType"];
 
-                var projectName = HttpContext.Current.Request.Params["projectName"];
+                var projectname = HttpContext.Current.Request.Params["projectName"];
                 var budget = HttpContext.Current.Request.Params["budget"];
                 var customerId = HttpContext.Current.Request.Params["customer"];
                 var mode = HttpContext.Current.Request.Params["mode"];
@@ -41,12 +97,12 @@ namespace CustomerRelationshipModule
                 if (mode == "UPDATE")
                 {
                     var projectId = HttpContext.Current.Request.Params["projectId"];
-                    var project = new ProjectHelper().Update(int.Parse(projectId), projectName, int.Parse(budget), int.Parse(customerId));
+                    var project = new ProjectHelper().Update(int.Parse(projectId), projectname, int.Parse(budget), int.Parse(customerId));
                     result.data = $"Project updated with name {project.name}";
                 }
                 else
                 {
-                    var project = new ProjectHelper().Add(projectName, int.Parse(budget), int.Parse(customerId));
+                    var project = new ProjectHelper().Add(projectname, int.Parse(budget), int.Parse(customerId));
                     result.data = $"New project added with name {project.name}";
                 }
                 result.isSuccess = true;

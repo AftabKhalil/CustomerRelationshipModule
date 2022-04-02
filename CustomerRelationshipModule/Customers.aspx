@@ -108,6 +108,7 @@
         }
 
         function deleteCustomer(i) {
+            debugger;
             var d = data[i];
 
             $.ajax({

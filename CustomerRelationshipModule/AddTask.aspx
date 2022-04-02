@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Project.aspx.cs" Inherits="CustomerRelationshipModule.Project" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="AddTask.aspx.cs" Inherits="CustomerRelationshipModule.AddTask" %>
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
@@ -9,19 +9,15 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 Live_feed_grid_view_logs">
                 <form>
                     <div class="form-group">
-                        <label for="name">Project Name</label>
-                        <input type="text" class="form-control" id="name" aria-describedby="nameHelper" placeholder="Enter Project Name" />
+                        <label for="name">Task Name</label>
+                        <input type="text" class="form-control" id="taskname" aria-describedby="nameHelper" placeholder="Enter Task Name" />
                     </div>
                     <div class="form-group">
-                        <label for="budget">Budget</label>
-                        <input type="text" class="form-control" id="budget" aria-describedby="contactNoHelp" placeholder="Enter budget" />
-                    </div>
-                    <div class="form-group">
-                        <label for="customer">Customer</label>
-                        <select class="form-control" id="customer">
+                        <label for="project">Project</label>
+                        <select class="form-control" id="project">
                         </select>
                     </div>
-                    <span class="btn btn-primary" onclick="saveProject()">Submit</span>
+                    <span class="btn btn-primary" onclick="saveTask()">Submit</span>
                 </form>
             </div>
         </div>
@@ -30,15 +26,14 @@
 
         var currentUserId = sessionStorage.getItem("currentUserId");
         var currentUserType = sessionStorage.getItem("currentUserType");
-        var projectId = params.projectId;
-        var mode = (projectId == null || projectId == "") ? "CREATE" : "UPDATE";
+        var TaskId = params.TaskId;
+        var mode = (TaskId == null || TaskId == "") ? "CREATE" : "UPDATE";
 
 
         $(document).ready(function () {
             debugger;
             $.ajax({
-                
-                url: "Customers.aspx/GetCustomers",
+                url: "Projects.aspx/GetProjects",
                 contentType: "application/json",
                 type: "GET",
                 dataType: "JSON",
@@ -55,8 +50,8 @@
                     $(result.d.data).each(function (index, item) {
                         x += '<option value="' + item.id + '">' + item.name + '</option>';
                     })
-                    $('#customer').html(x);
-                    if (mode == "UPDATE") getCustomer();
+                    $('#project').html(x);
+                    if (mode == "UPDATE") getproject();
                 },
                 error: function (xhr, status, error) {
                     alert(xhr.responseText);
@@ -66,16 +61,17 @@
             });
         });
 
-        function getCustomer(){
+        function getproject() {
+            debugger
             $.ajax({
-                url: "Project.aspx/GetProject",
+                url: "AddTask.aspx/GetTask",
                 contentType: "application/json",
                 type: "GET",
                 dataType: "JSON",
                 data: {
                     currentUserId: currentUserId,
                     currentUserType: currentUserType,
-                    projectId: projectId,
+                    TaskId: TaskId,
                 },
                 success: function (result) {
                     console.log(result);
@@ -84,12 +80,10 @@
                         return;
                     }
                     var data = result.d.data;
-                    debugger;
-                    $('#name').val(data.Name);
-                    $('#budget').val(data.Budget);
-                    $('#customer').val(data.CustomerId);
-                    $('#customer').attr('disabled', true);
-                   
+                    $('#taskname').val(data.TaskName);
+                    $('#project').val(data.ProjectId);
+                    $('#project').attr('disabled', true);
+                 
                 },
                 error: function (xhr, status, error) {
                     alert(xhr.responseText);
@@ -99,24 +93,22 @@
             });
         }
 
-        function saveProject() {
-            var projectName = $('#name').val();
-            var budget = $('#budget').val();
-            var customer = $('#customer').val();
+        function saveTask() {
+            debugger;
+            var taskname = $('#taskName').val();
+            var project = $('#project').val();
 
             $.ajax({
-                url: "Project.aspx/Save",
+                url: "AddTask.aspx/Save",
                 contentType: "application/json",
                 type: "GET",
                 dataType: "JSON",
                 data: {
                     currentUserId: currentUserId,
                     currentUserType: currentUserType,
-                    projectName: projectName,
-                    budget: budget,
-                    customer: customer,
-                    projectId: projectId,
-                    mode: mode,
+                    TaskName: taskname,
+                    project: project,
+                    TaskId: TaskId,
                 },
                 success: function (result) {
                     console.log(result);

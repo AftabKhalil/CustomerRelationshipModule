@@ -85,6 +85,7 @@
     <Compile Include="ORMHelper\CustomerHelper.cs" />
     <Compile Include="ORMHelper\EmployeeHelper.cs" />
     <Compile Include="ORMHelper\ProjectHelper.cs" />
+    <Compile Include="ORMHelper\TaskHelper.cs" />
     <Compile Include="Project.cs">
       <DependentUpon>CRMDB.tt</DependentUpon>
     </Compile>

@@ -14,5 +14,6 @@ namespace CustomerRelationshipModule.Models
         public string contactNo { get; set; }
         public string emailId { get; set; }
         public string password { get; set; }
+        public int budget { get; set; }
     }
 }

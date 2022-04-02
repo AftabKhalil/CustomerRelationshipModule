@@ -10,43 +10,45 @@ using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+
 namespace CustomerRelationshipModule
 {
-    public partial class Employees : System.Web.UI.Page
+    public partial class Tasks : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
 
         }
 
-        #region GetEmployees
+        #region GetTasks
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
-        public static object GetEmployees()
+        public static object GetTasks()
         {
             int.TryParse(HttpContext.Current.Request.Params["draw"], out int draw);
-            var result = new DataTableResponse<Models.Employee>(draw);
+            var result = new DataTableResponse<Models.Task>(draw);
             try
             {
                 var currentUserId = HttpContext.Current.Request.Params["currentUserId"];
+                var currentUserType = HttpContext.Current.Request.Params["currentUserType"];
 
-                if (!new EmployeeHelper().IsAdmin(currentUserId))
+                var task = new TaskHelper().GetTasks();
+
+                if (currentUserType == "Customer")
                 {
-                    throw new Exception("Only admin user can view this page");
+                    task = task.Where(p => p.project_id == int.Parse(currentUserId)).ToList();
+                }
+                else if (!new EmployeeHelper().IsAdmin(currentUserId))
+                {
+                    throw new Exception("Only admin can view this page");
                 }
 
-                var emplyess = new EmployeeHelper().GetEmployees();
-                List<Models.Employee> converted = emplyess.ConvertAll(x => new Models.Employee()
+                List<Models.Task> converted = task.ConvertAll(x => new Models.Task()
                 {
-                    id = x.id,
+                    ID = x.id,
 
-                    name = x.name,
-                    position = EnumExtension.ToEnum<EmployeeType>(x.position).ToString(),
-                    salary = x.salary,
-                    expirence = x.previous_expirence_in_months,
-                    contactNo = x.contact_no,
-                    emailId = x.email_id,
-                    systemId = x.system_id,
+                    Name = x.name,
+                    ProjectName = x.Project.name
                 });
 
                 result.data = converted;
@@ -60,35 +62,31 @@ namespace CustomerRelationshipModule
                 result.error = errorMessage;
             }
             return result;
+
         }
         #endregion
 
-        #region DeleteEmployee
+
+        #region DeleteTasks
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
-        public static object DeleteEmployee()
+        public static object DeleteTasks()
         {
             var result = new Models.AjaxResponse<string>();
             try
             {
                 var currentUserId = HttpContext.Current.Request.Params["currentUserId"];
                 var currentUserTpe = HttpContext.Current.Request.Params["currentUserType"];
-                var employeeId = HttpContext.Current.Request.Params["employeeId"];
+                var TaskId = int.Parse(HttpContext.Current.Request.Params["TaskId"]);
 
                 if (!new EmployeeHelper().IsAdmin(currentUserId))
                 {
                     throw new Exception("Only admin user can delete employees");
                 }
 
-                if (new EmployeeHelper().IsAdmin(employeeId) && new EmployeeHelper().GetAdminCount() == 1)
-                {
-                    throw new Exception("Cant delete the one and only Admin user");
-                }
-
-                new EmployeeHelper().DeleteEmployee(employeeId);
+                new TaskHelper().DeleteTask(TaskId);
                 result.isSuccess = true;
-        
-                result.data = $"Emplyee with system id {employeeId} is deleted.";
+                result.data = $"customer with system id {TaskId} is deleted.";
             }
             catch (Exception ex)
             {

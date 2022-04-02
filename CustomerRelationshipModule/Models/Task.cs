@@ -5,13 +5,11 @@ using System.Web;
 
 namespace CustomerRelationshipModule.Models
 {
-    public class Project
+    public class Task
     {
-
         public int ID { get; set; }
         public string Name { get; set; }
-        public int Budget { get; set; }
-        public string CustomerName { get; set; }
-        public int CustomerId { get; internal set; }
+        public string ProjectName { get; set; }
+        public int ProjectId { get; set; }
     }
 }

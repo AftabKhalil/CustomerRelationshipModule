@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Projects.aspx.cs" Inherits="CustomerRelationshipModule.Projects" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Tasks.aspx.cs" Inherits="CustomerRelationshipModule.Tasks" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -6,13 +6,12 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 Live_feed_grid_view_logs">
-                <table id="Projects" class="table table-striped table-bordered table-hover Live_feed_grid_view_logs" style="width: 100%">
+                <table id="Tasks" class="table table-striped table-bordered table-hover Live_feed_grid_view_logs" style="width: 100%">
                     <thead>
                         <tr>
                             <th class="text-center" style="width: 10%;">ID</th>
                             <th class="text-center" style="width: 20%;">Name</th>
-                            <th class="text-center" style="width: 10%;">Budget</th>
-                            <th class="text-center" style="width: 10%;">Customer Name</th>
+                            <th class="text-center" style="width: 10%;">Project Name</th>
                             <th class="text-center" style="width: 20%">Action</th>
                         </tr>
                     </thead>
@@ -22,13 +21,13 @@
     </div>
 
     <script>
-        var currentUserId, currentUserType,projectId;
+        var currentUserId, currentUserType;
         var data, index = -1;
         var table;
         $(document).ready(function () {
             currentUserId = sessionStorage.getItem("currentUserId");
             currentUserType = sessionStorage.getItem("currentUserType");
-            table = $('#Projects').DataTable({
+            table = $('#Tasks').DataTable({
                 "columnDefs": [
                     { "className": "text-center custom-middle-align", "targets": "_all" },
                 ],
@@ -50,17 +49,17 @@
                 "dom": 'lrftip',
 
                 ajax: {
-                    url: "Projects.aspx/GetProjects",
+                    url: "Tasks.aspx/GetTasks",
                     contentType: "application/json",
                     type: "GET",
-                    dataType: "JSON",
+                    dataType: "JSON",  
                     data: {
                         "currentUserId": currentUserId,
                         "currentUserType": currentUserType,
                        
                     },
                     error: function (xhr, status, error) {
-                        $('#Projects_processing').hide();
+                        $('#Tasks_processing').hide();
                         alert(xhr.responseText);
                         return;
                     },
@@ -86,36 +85,31 @@
                 columns: [
                     { data: 'ID', name: 'ID' },
                     { data: 'Name', name: 'Name' },
-                    { data: 'Budget', name: 'Budget' },
-                    { data: 'CustomerName', name: 'CustomerName' },
+                    { data: 'ProjectName', name: 'ProjectName' },
                     {
                         data: 'ID', name: 'ID', render: function (data) {
                             index++;
-                            return '<span class="btn btn-success" onclick="editProject(' + index + ')">Edit</span>&nbsp;&nbsp;<span class="btn btn-danger" onclick="deleteProject(' + index + ')">Delete</span>';
+                            return '<span class="btn btn-danger" onclick="deletetask(' + index + ')">Delete</span>';
                         }
                     }
                 ]
             });
         });
 
-        function editProject(i) {
+        function deletetask(i) {
             debugger;
-            var d = data[i];
-            window.location = '/Project.aspx?projectId=' + d.ID;
-        }
-
-      function deleteProject(i) {
             var d = data[i];
 
             $.ajax({
-                url: "Projects.aspx/DeleteProject",
+                url: "Tasks.aspx/DeleteTasks",
                 contentType: "application/json",
                 type: "GET",
                 dataType: "JSON",
                 data: {
                     currentUserId: currentUserId,
                     currentUserType: currentUserType,
-                    projectId: d.ID,
+                    TaskId:d.ID,
+                    
                 },
                 success: function (result) {
                     console.log(result);
