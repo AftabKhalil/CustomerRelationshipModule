@@ -10,7 +10,7 @@
                 <form>
                     <div class="form-group">
                         <label for="name">Task Name</label>
-                        <input type="text" class="form-control" id="taskname" aria-describedby="nameHelper" placeholder="Enter Task Name" />
+                        <input type="text" class="form-control" id="taskName" aria-describedby="nameHelper" placeholder="Enter Task Name" />
                     </div>
                     <div class="form-group">
                         <label for="project">Project</label>
@@ -23,12 +23,10 @@
         </div>
     </div>
     <script>
-
         var currentUserId = sessionStorage.getItem("currentUserId");
         var currentUserType = sessionStorage.getItem("currentUserType");
-        var TaskId = params.TaskId;
-        var mode = (TaskId == null || TaskId == "") ? "CREATE" : "UPDATE";
-
+        var taskId = params.taskId;
+        var mode = (taskId == null || taskId == "") ? "CREATE" : "UPDATE";
 
         $(document).ready(function () {
             debugger;
@@ -48,10 +46,10 @@
                     }
                     var x = '';
                     $(result.d.data).each(function (index, item) {
-                        x += '<option value="' + item.id + '">' + item.name + '</option>';
+                        x += '<option value="' + item.ID + '">' + item.Name + '</option>';
                     })
                     $('#project').html(x);
-                    if (mode == "UPDATE") getproject();
+                    if (mode == "UPDATE") getTask();
                 },
                 error: function (xhr, status, error) {
                     alert(xhr.responseText);
@@ -61,8 +59,7 @@
             });
         });
 
-        function getproject() {
-            debugger
+        function getTask() {
             $.ajax({
                 url: "AddTask.aspx/GetTask",
                 contentType: "application/json",
@@ -71,7 +68,7 @@
                 data: {
                     currentUserId: currentUserId,
                     currentUserType: currentUserType,
-                    TaskId: TaskId,
+                    taskId: taskId,
                 },
                 success: function (result) {
                     console.log(result);
@@ -80,10 +77,9 @@
                         return;
                     }
                     var data = result.d.data;
-                    $('#taskname').val(data.TaskName);
+                    $('#taskName').val(data.Name);
                     $('#project').val(data.ProjectId);
                     $('#project').attr('disabled', true);
-                 
                 },
                 error: function (xhr, status, error) {
                     alert(xhr.responseText);
@@ -94,8 +90,7 @@
         }
 
         function saveTask() {
-            debugger;
-            var taskname = $('#taskName').val();
+            var taskName = $('#taskName').val();
             var project = $('#project').val();
 
             $.ajax({
@@ -106,9 +101,10 @@
                 data: {
                     currentUserId: currentUserId,
                     currentUserType: currentUserType,
-                    TaskName: taskname,
+                    taskName: taskName,
                     project: project,
-                    TaskId: TaskId,
+                    taskId: taskId,
+                    mode: mode,
                 },
                 success: function (result) {
                     console.log(result);

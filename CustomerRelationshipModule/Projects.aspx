@@ -22,7 +22,7 @@
     </div>
 
     <script>
-        var currentUserId, currentUserType,projectId;
+        var currentUserId, currentUserType, projectId;
         var data, index = -1;
         var table;
         $(document).ready(function () {
@@ -57,7 +57,7 @@
                     data: {
                         "currentUserId": currentUserId,
                         "currentUserType": currentUserType,
-                       
+
                     },
                     error: function (xhr, status, error) {
                         $('#Projects_processing').hide();
@@ -91,7 +91,7 @@
                     {
                         data: 'ID', name: 'ID', render: function (data) {
                             index++;
-                            return '<span class="btn btn-success" onclick="editProject(' + index + ')">Edit</span>&nbsp;&nbsp;<span class="btn btn-danger" onclick="deleteProject(' + index + ')">Delete</span>';
+                            return currentUserType == 'Admin' ? '<span class="btn btn-success" onclick="editProject(' + index + ')">Edit</span>&nbsp;&nbsp;<span class="btn btn-danger" onclick="deleteProject(' + index + ')">Delete</span>' : '---';
                         }
                     }
                 ]
@@ -104,7 +104,7 @@
             window.location = '/Project.aspx?projectId=' + d.ID;
         }
 
-      function deleteProject(i) {
+        function deleteProject(i) {
             var d = data[i];
 
             $.ajax({

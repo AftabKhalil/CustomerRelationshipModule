@@ -52,11 +52,11 @@
                     url: "Tasks.aspx/GetTasks",
                     contentType: "application/json",
                     type: "GET",
-                    dataType: "JSON",  
+                    dataType: "JSON",
                     data: {
                         "currentUserId": currentUserId,
                         "currentUserType": currentUserType,
-                       
+
                     },
                     error: function (xhr, status, error) {
                         $('#Tasks_processing').hide();
@@ -89,15 +89,20 @@
                     {
                         data: 'ID', name: 'ID', render: function (data) {
                             index++;
-                            return '<span class="btn btn-danger" onclick="deletetask(' + index + ')">Delete</span>';
+                            return currentUserType == 'Admin' ? '<span class="btn btn-success" onclick="editTask(' + index + ')">Edit</span>&nbsp;&nbsp;<span class="btn btn-danger" onclick="deletetask(' + index + ')">Delete</span>' : '---';
                         }
                     }
                 ]
             });
         });
 
-        function deletetask(i) {
+        function editTask(i) {
+            var d = data[i];
             debugger;
+            window.location = '/AddTask.aspx?taskId=' + d.ID;
+        }
+
+        function deletetask(i) {
             var d = data[i];
 
             $.ajax({
@@ -108,8 +113,7 @@
                 data: {
                     currentUserId: currentUserId,
                     currentUserType: currentUserType,
-                    TaskId:d.ID,
-                    
+                    TaskId: d.ID,
                 },
                 success: function (result) {
                     console.log(result);
@@ -127,7 +131,6 @@
                 },
             });
         }
-
     </script>
 
 </asp:Content>

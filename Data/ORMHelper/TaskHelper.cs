@@ -23,7 +23,7 @@ namespace Data.ORMHelper
         public void DeleteTask(int TaskId)
         {
             var db = new CRMEntities();
-            var task = db.Tasks.Where(p => p.id ==TaskId).FirstOrDefault();
+            var task = db.Tasks.Where(p => p.id == TaskId).FirstOrDefault();
 
             if (task != null)
                 db.Tasks.Remove(task);
@@ -46,8 +46,8 @@ namespace Data.ORMHelper
             var p = new Task()
             {
                 name = TaskName,
-               project_id = projectId,
-               
+                project_id = projectId,
+
             };
 
             db.Tasks.Add(p);
@@ -66,7 +66,7 @@ namespace Data.ORMHelper
             }
 
             e.name = TaskName;
-            
+
             e.project_id = projectId;
 
             db.SaveChanges();
