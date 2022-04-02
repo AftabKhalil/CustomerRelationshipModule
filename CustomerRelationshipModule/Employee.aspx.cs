@@ -109,7 +109,7 @@ namespace CustomerRelationshipModule
                     throw new Exception("invalid salary");
                 }
                 
-                if (string.IsNullOrEmpty(email) || !email.Contains("@") || email.Length < 3)
+                if (string.IsNullOrEmpty(email) || !email.Contains("@") || email.Length < 3 || !email.Contains(".com"))
                 {
                     throw new Exception("Email is invalid");
                 }

@@ -80,6 +80,7 @@
                         return;
                     }
                     var data = result.d.data;
+                    debugger;
                     $('#taskname').val(data.TaskName);
                     $('#project').val(data.ProjectId);
                     $('#project').attr('disabled', true);
@@ -95,7 +96,7 @@
 
         function saveTask() {
             debugger;
-            var taskname = $('#taskName').val();
+            var taskname = $('#taskname').val();
             var project = $('#project').val();
 
             $.ajax({
