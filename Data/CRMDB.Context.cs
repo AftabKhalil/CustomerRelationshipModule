@@ -27,7 +27,6 @@ namespace Data
     
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
-        public virtual DbSet<FeedBack> FeedBacks { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<Task> Tasks { get; set; }
         public virtual DbSet<TaskAssignment> TaskAssignments { get; set; }

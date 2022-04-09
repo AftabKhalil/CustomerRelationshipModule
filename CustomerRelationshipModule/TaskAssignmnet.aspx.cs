@@ -1,4 +1,6 @@
-﻿using Data.ORMHelper;
+﻿using Common.Utils;
+using CustomerRelationshipModule.Models;
+using Data.ORMHelper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,41 +12,42 @@ using System.Web.UI.WebControls;
 
 namespace CustomerRelationshipModule
 {
-    public partial class AddTask : System.Web.UI.Page
+    public partial class TaskAssignmnet : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
 
         }
 
-        #region GetTask
+        #region GetTaskAssignment
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
-        public static object GetTask()
+        public static object GetTaskAssignment()
         {
-            var result = new Models.AjaxResponse<Models.Task>();
+            int.TryParse(HttpContext.Current.Request.Params["draw"], out int draw);
+            var result = new DataTableResponse<Models.TaskAssignment>(draw);
             try
             {
                 var currentUserId = HttpContext.Current.Request.Params["currentUserId"];
-                var currentUserTpe = HttpContext.Current.Request.Params["currentUserType"];
-                var TaskId = int.Parse(HttpContext.Current.Request.Params["TaskId"]);
+                var currentUserType = HttpContext.Current.Request.Params["currentUserType"];
+                var taskId = HttpContext.Current.Request.Params["taskId"];
 
-                if (currentUserTpe == "Admin")
-                {
-                    var Task = new TaskHelper().GetTask(TaskId);
-                    result.data = new Models.Task()
-                    {
-                        ID = Task.id,
+                if (!int.TryParse(taskId, out int TaskId))
+                    throw new Exception("No task Id in request");
 
-                        Name = Task.name,
-                        ProjectName = Task.Project.name,
-                        ProjectId = Task.project_id,
-                    };
-                }
-                else
+                var taskAssingmnets = new TaskAssignmentHelper().GetTaskAssignments(TaskId);
+
+                List<Models.TaskAssignment> converted = taskAssingmnets.ConvertAll(x => new Models.TaskAssignment()
                 {
-                    throw new Exception("Only admin user can view this page");
-                }
+                    Id = x.id,
+                    EmployeeId = x.employee_id.ToString(),
+                    EmployeeName = x.Employee.name,
+                    Rating = x.sentiment.ToString(),
+                    Review = x.message,
+                    AssignmentType = EnumExtension.ToEnum<TaskType>(x.task_type).ToString(),
+                });
+
+                result.data = converted;
                 result.isSuccess = true;
             }
             catch (Exception ex)
@@ -55,6 +58,7 @@ namespace CustomerRelationshipModule
                 result.error = errorMessage;
             }
             return result;
+
         }
         #endregion
 
@@ -69,26 +73,23 @@ namespace CustomerRelationshipModule
                 var currentUserId = HttpContext.Current.Request.Params["currentUserId"];
                 var currentUserTpe = HttpContext.Current.Request.Params["currentUserType"];
 
-                var TaskName = HttpContext.Current.Request.Params["taskName"];
-                var projectId = HttpContext.Current.Request.Params["project"];
-                var mode = HttpContext.Current.Request.Params["mode"];
+                var taskId = int.Parse(HttpContext.Current.Request.Params["taskId"]);
+                var employeeId = int.Parse(HttpContext.Current.Request.Params["employeeId"]);
+                var assignmentType = int.Parse(HttpContext.Current.Request.Params["assignmentType"]);
 
                 if (!new EmployeeHelper().IsAdmin(currentUserId))
                 {
                     throw new Exception("Only Admin user can add/edit new tasks");
                 }
 
-                if (mode == "UPDATE")
+                if (new TaskAssignmentHelper().GetTaskAssignment(employeeId, taskId, assignmentType) != null)
                 {
-                    var taskId = HttpContext.Current.Request.Params["taskId"];
-                    var task = new TaskHelper().Update(int.Parse(taskId), TaskName, int.Parse(projectId));
-                    result.data = $"task updated with name {task.name}";
+                    throw new Exception("Same assignment already assigned to same employee");
                 }
-                else
-                {
-                    var task = new TaskHelper().Add(TaskName, int.Parse(projectId));
-                    result.data = $"New task added with name {task.name}";
-                }
+
+                var task = new TaskAssignmentHelper().Add(employeeId, taskId, assignmentType);
+                result.data = $"New task assignment added";
+
                 result.isSuccess = true;
             }
             catch (Exception ex)

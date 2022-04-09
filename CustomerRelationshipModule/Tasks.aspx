@@ -89,7 +89,10 @@
                     {
                         data: 'ID', name: 'ID', render: function (data) {
                             index++;
-                            return currentUserType == 'Admin' ? '<span class="btn btn-success" onclick="editTask(' + index + ')">Edit</span>&nbsp;&nbsp;<span class="btn btn-danger" onclick="deletetask(' + index + ')">Delete</span>' : '---';
+                            var actions = '<span class="btn btn-primary" onclick="taskAssignmnet(' + index + ')">View Assignmets</span>&nbsp;&nbsp;';
+                            if (currentUserType == 'Admin')
+                                actions += '<span class="btn btn-success" onclick="editTask(' + index + ')">Edit</span>&nbsp;&nbsp;<span class="btn btn-danger" onclick="deletetask(' + index + ')">Delete</span>';
+                            return actions;
                         }
                     }
                 ]
@@ -98,8 +101,12 @@
 
         function editTask(i) {
             var d = data[i];
-            debugger;
             window.location = '/AddTask.aspx?taskId=' + d.ID;
+        }
+
+        function taskAssignmnet(i) {
+            var d = data[i];
+            window.location = '/TaskAssignmnet.aspx?taskId=' + d.ID;
         }
 
         function deletetask(i) {

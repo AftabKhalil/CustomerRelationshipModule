@@ -73,6 +73,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="EditTaskAssignment.aspx" />
     <Content Include="Assits\Custom.js" />
     <Content Include="Customer.aspx" />
     <Content Include="Default.aspx" />
@@ -83,11 +84,19 @@
     <Content Include="Projects.aspx" />
     <Content Include="SignIn.aspx" />
     <Content Include="AddTask.aspx" />
+    <Content Include="TaskAssignmnet.aspx" />
     <Content Include="Tasks.aspx" />
     <Content Include="Web.config" />
     <Content Include="Customers.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EditTaskAssignment.aspx.cs">
+      <DependentUpon>EditTaskAssignment.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditTaskAssignment.aspx.designer.cs">
+      <DependentUpon>EditTaskAssignment.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Customer.aspx.cs">
       <DependentUpon>Customer.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -130,6 +139,7 @@
     <Compile Include="Models\Projects.cs" />
     <Compile Include="Models\Response.cs" />
     <Compile Include="Models\Task.cs" />
+    <Compile Include="Models\TaskAssignment.cs" />
     <Compile Include="Project.aspx.cs">
       <DependentUpon>Project.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -172,6 +182,13 @@
     </Compile>
     <Compile Include="AddTask.aspx.designer.cs">
       <DependentUpon>AddTask.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TaskAssignmnet.aspx.cs">
+      <DependentUpon>TaskAssignmnet.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TaskAssignmnet.aspx.designer.cs">
+      <DependentUpon>TaskAssignmnet.aspx</DependentUpon>
     </Compile>
     <Compile Include="Tasks.aspx.cs">
       <DependentUpon>Tasks.aspx</DependentUpon>

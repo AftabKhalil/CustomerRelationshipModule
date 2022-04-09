@@ -39,6 +39,11 @@ namespace CustomerRelationshipModule
                     var customer = new CustomerHelper().GetCustomer(currentUserId);
                     task = task.Where(p => p.Project.customer_id == customer.id).ToList();
                 }
+                else if (currentUserType == "Employee")
+                {
+                    var employee = new EmployeeHelper().GetEmployee(currentUserId);
+                    task = task.Where(p => p.TaskAssignments.Any(ta => ta.employee_id == employee.id)).ToList();
+                }
                 else if (!new EmployeeHelper().IsAdmin(currentUserId))
                 {
                     throw new Exception("Only admin can view this page");
