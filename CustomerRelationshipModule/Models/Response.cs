@@ -9,5 +9,6 @@ namespace CustomerRelationshipModule.Models
     {
         public bool isSuccess { get; set; }
         public T data { get; set; }
+        public string error { get; set; }
     }
 }

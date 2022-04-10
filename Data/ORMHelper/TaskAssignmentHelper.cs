@@ -15,6 +15,13 @@ namespace Data.ORMHelper
             return taskAssignments;
         }
 
+        public TaskAssignment GetTaskAssignment(int taskAssignmnetId)
+        {
+            var db = new CRMEntities();
+            var taskAssignment = db.TaskAssignments.Include("Employee").Where(ta => ta.id == taskAssignmnetId).First();
+            return taskAssignment;
+        }
+
         public TaskAssignment GetTaskAssignment(int EmployeeId, int TaskId, int AssignmentType)
         {
             var db = new CRMEntities();
@@ -37,6 +44,38 @@ namespace Data.ORMHelper
             db.TaskAssignments.Add(p);
             db.SaveChanges();
             return p;
+        }
+
+        public TaskAssignment EditReview(int taskAssignmnetId, string review)
+        {
+            var db = new CRMEntities();
+            var e = db.TaskAssignments.FirstOrDefault(x => x.id == taskAssignmnetId);
+
+            if (e == null)
+            {
+                throw new Exception("No Task Assignment found to edit");
+            }
+            e.message = review;
+
+            db.SaveChanges();
+            db.Dispose();
+            return e;
+        }
+
+        public TaskAssignment EditRating(int taskAssignmnetId, int rating)
+        {
+            var db = new CRMEntities();
+            var e = db.TaskAssignments.FirstOrDefault(x => x.id == taskAssignmnetId);
+
+            if (e == null)
+            {
+                throw new Exception("No Task Assignment found to edit");
+            }
+            e.sentiment = rating;
+
+            db.SaveChanges();
+            db.Dispose();
+            return e;
         }
     }
 }

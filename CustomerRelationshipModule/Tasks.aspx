@@ -101,12 +101,14 @@
 
         function editTask(i) {
             var d = data[i];
-            window.location = '/AddTask.aspx?taskId=' + d.ID;
+            sessionStorage.setItem('taskId', d.ID);
+            window.location = '/AddTask.aspx';
         }
 
         function taskAssignmnet(i) {
             var d = data[i];
-            window.location = '/TaskAssignmnet.aspx?taskId=' + d.ID;
+            sessionStorage.setItem('taskId', d.ID);
+            window.location = '/TaskAssignmnet.aspx';
         }
 
         function deletetask(i) {

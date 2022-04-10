@@ -59,7 +59,7 @@
         var currentUserId, currentUserType;
         var data, index = -1;
         var table;
-        var taskId = params.taskId;
+        var taskId = sessionStorage.getItem("taskId");
 
         $('#taskId').text(taskId);
 
@@ -175,7 +175,6 @@
             });
         });
 
-
         function addAssignment() {
             var employeeId = $('#employee').val();
             var assignmentType = $('#assignmentType').val();
@@ -206,6 +205,12 @@
                     return;
                 },
             });
+        }
+
+        function editTaskAssignmnet(i) {
+            var d = data[i];
+            sessionStorage.setItem('taskAssignmentId', d.Id);
+            window.location = '/EditTaskAssignment.aspx';
         }
 
     </script>

@@ -25,11 +25,10 @@
     <script>
         var currentUserId = sessionStorage.getItem("currentUserId");
         var currentUserType = sessionStorage.getItem("currentUserType");
-        var taskId = params.taskId;
+        var taskId = sessionStorage.getItem("taskId");
         var mode = (taskId == null || taskId == "") ? "CREATE" : "UPDATE";
 
         $(document).ready(function () {
-            debugger;
             $.ajax({
                 url: "Projects.aspx/GetProjects",
                 contentType: "application/json",
