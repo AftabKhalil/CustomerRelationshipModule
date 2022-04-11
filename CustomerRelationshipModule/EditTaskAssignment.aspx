@@ -1,5 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="AddTask.aspx.cs" Inherits="CustomerRelationshipModule.AddTask" %>
-
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EditTaskAssignment.aspx.cs" Inherits="CustomerRelationshipModule.EditTaskAssignment" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -9,15 +8,23 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 Live_feed_grid_view_logs">
                 <form>
                     <div class="form-group">
-                        <label for="name">Task Name</label>
-                        <input type="text" class="form-control" id="taskName" aria-describedby="nameHelper" placeholder="Enter Task Name" />
+                        <label for="name">Assignment Type</label>
+                        <input class="form-control" type="text" id="assignmentType" />
                     </div>
                     <div class="form-group">
-                        <label for="project">Project</label>
-                        <select class="form-control" id="project">
+                        <label for="employee">Employee</label>
+                        <select class="form-control" id="employee">
                         </select>
                     </div>
-                    <span class="btn btn-primary" onclick="saveTask()">Submit</span>
+                    <div class="form-group">
+                        <label for="review">Review</label>
+                        <textarea class="form-control" id="review"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="rating">Rating</label>
+                        <input class="form-control" type="number" min="0" max="5" id="rating" />
+                    </div>
+                    <span class="btn btn-primary" onclick="SaveTaskAssignment()">Save</span>
                 </form>
             </div>
         </div>
@@ -25,17 +32,17 @@
     <script>
         var currentUserId = sessionStorage.getItem("currentUserId");
         var currentUserType = sessionStorage.getItem("currentUserType");
-        var taskId = sessionStorage.getItem("taskId");
-        var mode = (taskId == null || taskId == "") ? "CREATE" : "UPDATE";
+        var taskAssignmentId = sessionStorage.getItem("taskAssignmentId");
 
         $(document).ready(function () {
             $.ajax({
-                url: "Projects.aspx/GetProjects",
+                url: "Employees.aspx/GetEmployees",
                 contentType: "application/json",
                 type: "GET",
                 dataType: "JSON",
                 data: {
                     currentUserId: currentUserId,
+                    overpassAdminCheck: true
                 },
                 success: function (result) {
                     console.log(result);
@@ -45,10 +52,11 @@
                     }
                     var x = '';
                     $(result.d.data).each(function (index, item) {
-                        x += '<option value="' + item.ID + '">' + item.Name + '</option>';
+                        if (item.position != "Admin")
+                            x += '<option value="' + item.id + '">' + item.name + '</option>';
                     })
-                    $('#project').html(x);
-                    if (mode == "UPDATE") getTask();
+                    $('#employee').html(x);
+                    getTaskAssignment();
                 },
                 error: function (xhr, status, error) {
                     alert(xhr.responseText);
@@ -56,18 +64,19 @@
                     return;
                 },
             });
+
         });
 
-        function getTask() {
+        function getTaskAssignment() {
             $.ajax({
-                url: "AddTask.aspx/GetTask",
+                url: "EditTaskAssignment.aspx/GetTaskAssignment",
                 contentType: "application/json",
                 type: "GET",
                 dataType: "JSON",
                 data: {
                     currentUserId: currentUserId,
                     currentUserType: currentUserType,
-                    taskId: taskId,
+                    taskAssignmentId: taskAssignmentId,
                 },
                 success: function (result) {
                     console.log(result);
@@ -76,9 +85,25 @@
                         return;
                     }
                     var data = result.d.data;
-                    $('#taskName').val(data.Name);
-                    $('#project').val(data.ProjectId);
-                    $('#project').attr('disabled', true);
+                    $('#assignmentType').val(data.AssignmentType);
+                    $('#assignmentType').attr('disabled', true);
+
+                    $('#employee').val(data.EmployeeId);
+                    $('#employee').attr('disabled', true);
+
+                    $('#review').val(data.Review);
+                    $('#review').attr('disabled', true);
+
+                    $('#rating').val(data.Rating);
+                    $('#rating').attr('disabled', true);
+
+                    if (currentUserType == "Admin") {
+                        $('#rating').attr('disabled', false);
+                    }
+                    if (currentUserType == "Customer") {
+                        $('#review').attr('disabled', false);
+                    }
+
                 },
                 error: function (xhr, status, error) {
                     alert(xhr.responseText);
@@ -88,22 +113,21 @@
             });
         }
 
-        function saveTask() {
-            var taskName = $('#taskName').val();
-            var project = $('#project').val();
+        function SaveTaskAssignment() {
+            var review = $('#review').val();
+            var rating = $('#rating').val();
 
             $.ajax({
-                url: "AddTask.aspx/Save",
+                url: "EditTaskAssignment.aspx/Save",
                 contentType: "application/json",
                 type: "GET",
                 dataType: "JSON",
                 data: {
                     currentUserId: currentUserId,
                     currentUserType: currentUserType,
-                    taskName: taskName,
-                    project: project,
-                    taskId: taskId,
-                    mode: mode,
+                    taskAssignmentId: taskAssignmentId,
+                    review: review,
+                    rating: rating,
                 },
                 success: function (result) {
                     console.log(result);

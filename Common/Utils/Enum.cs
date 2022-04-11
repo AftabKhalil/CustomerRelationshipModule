@@ -18,7 +18,14 @@ namespace Common.Utils
     {
         Admin = 1,
         Developer = 2,
-        Projectmanager = 3,
+        ProjectManager = 3,
         SQA = 4
+    }
+
+    public enum TaskType
+    {
+        Development = 1,
+        SQA = 2,
+        ProjectManagement = 3,
     }
 }

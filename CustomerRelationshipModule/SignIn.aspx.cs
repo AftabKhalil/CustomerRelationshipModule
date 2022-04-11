@@ -63,9 +63,12 @@ namespace CustomerRelationshipModule
                     };
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                //need to escape the "\" in your string (turning it into a double-"\"), otherwise it will become a newline in the JSON source, not the JSON data
+                var errorMessage = ex.Message.Replace("\n", "\\n").Replace("\r", "\\r");
+                result.isSuccess = false;
+                result.error = errorMessage;
             }
             return result;
         }

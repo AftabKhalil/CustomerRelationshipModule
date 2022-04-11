@@ -16,7 +16,7 @@ namespace Data.ORMHelper
         public List<Task> GetTasks()
         {
             var db = new CRMEntities();
-            var tasks = db.Tasks.Include("Project").ToList();
+            var tasks = db.Tasks.Include("Project").Include("TaskAssignments").ToList();
             return tasks;
         }
 
