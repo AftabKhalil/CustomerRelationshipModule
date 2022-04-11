@@ -32,20 +32,17 @@ namespace CustomerRelationshipModule
 
                     if (!string.IsNullOrEmpty(currentUserId))
                     {
-                        if (currentUserType == "Employee")
+                        if (currentUserType == "Admin" && node["module"].Contains("Admin"))
                         {
-                            if (new EmployeeHelper().IsAdmin(currentUserId) && node["module"].Contains("Admin"))
-                            {
-                                var mainMenu = new { id = "menuitem-" + id++, url = node.Url, title = node.Title, icon = node.ResourceKey, hasChuild = false, ChildMenu = new List<dynamic>() };
-                                menulist.Add(mainMenu);
-                            }
-                            else if (node["module"].Contains("Employee"))
-                            {
-                                var mainMenu = new { id = "menuitem-" + id++, url = node.Url, title = node.Title, icon = node.ResourceKey, hasChuild = false, ChildMenu = new List<dynamic>() };
-                                menulist.Add(mainMenu);
-                            }
+                            var mainMenu = new { id = "menuitem-" + id++, url = node.Url, title = node.Title, icon = node.ResourceKey, hasChuild = false, ChildMenu = new List<dynamic>() };
+                            menulist.Add(mainMenu);
                         }
-                        else if (node["module"].Contains("Customer"))
+                        else if (currentUserType == "Employee" && node["module"].Contains("Employee"))
+                        {
+                            var mainMenu = new { id = "menuitem-" + id++, url = node.Url, title = node.Title, icon = node.ResourceKey, hasChuild = false, ChildMenu = new List<dynamic>() };
+                            menulist.Add(mainMenu);
+                        }
+                        else if (currentUserType == "Customer" && node["module"].Contains("Customer"))
                         {
                             var mainMenu = new { id = "menuitem-" + id++, url = node.Url, title = node.Title, icon = node.ResourceKey, hasChuild = false, ChildMenu = new List<dynamic>() };
                             menulist.Add(mainMenu);

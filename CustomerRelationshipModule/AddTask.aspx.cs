@@ -80,13 +80,13 @@ namespace CustomerRelationshipModule
                 var currentUserId = HttpContext.Current.Request.Params["currentUserId"];
                 var currentUserTpe = HttpContext.Current.Request.Params["currentUserType"];
 
-                var TaskName = HttpContext.Current.Request.Params["taskname"];
+                var TaskName = HttpContext.Current.Request.Params["taskName"];
                 var projectId = HttpContext.Current.Request.Params["project"];
                 var mode = HttpContext.Current.Request.Params["mode"];
 
                 if (!new EmployeeHelper().IsAdmin(currentUserId))
                 {
-                    throw new Exception("Only Admin user can add/edit new projects");
+                    throw new Exception("Only Admin user can add/edit new tasks");
                 }
 
                 if (mode == "UPDATE")

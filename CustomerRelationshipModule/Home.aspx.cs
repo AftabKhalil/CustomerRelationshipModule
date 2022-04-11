@@ -28,7 +28,7 @@ namespace CustomerRelationshipModule
                 var currentUserId = HttpContext.Current.Request.Params["currentUserId"];
                 var currentUserTpe = HttpContext.Current.Request.Params["currentUserType"];
 
-                if (currentUserTpe == "Employee")
+                if (currentUserTpe == "Admin" || currentUserTpe == "Employee")
                 {
                     var employee = new EmployeeHelper().GetEmployee(currentUserId);
                     if (employee == null)

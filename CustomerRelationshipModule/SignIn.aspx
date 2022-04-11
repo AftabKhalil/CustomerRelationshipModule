@@ -52,8 +52,9 @@
                         return;
                     }
                     else {
-                        userSystemId = response.d.data.systemId;
-                        showHome(userSystemId, isCustomer ? "Customer" : "Employee");
+                        currentUserId = response.d.data.currentUserId;
+                        currentUserType = response.d.data.currentUserType
+                        showHome(currentUserId, currentUserType);
                     }
                 }
             });

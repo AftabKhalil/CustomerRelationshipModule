@@ -26,34 +26,40 @@ namespace CustomerRelationshipModule
             var password = HttpContext.Current.Request.Params["password"];
             var isCustomer = HttpContext.Current.Request.Params["isCustomer"];
 
-            var result = new Response<Models.Employee>();
+            var result = new Response<Object>();
             try
             {
-                var systemId = "";
+                var currentUserId = "";
+                var currentUserType = "";
 
                 if (isCustomer.ToLower() == "false")
                 {
-                    systemId = new EmployeeHelper().GetSystemId(emailId, password);
-                    CustomerRelationshipModule.Site.currentUserId = systemId;
-                    CustomerRelationshipModule.Site.currentUserType = "Employee";
+                    currentUserId = new EmployeeHelper().GetSystemId(emailId, password);
+                    CustomerRelationshipModule.Site.currentUserId = currentUserId;
+
+                    var isAdmin = new EmployeeHelper().IsAdmin(currentUserId);
+                    currentUserType = isAdmin ? "Admin" : "Employee";
+                    CustomerRelationshipModule.Site.currentUserType = currentUserType;
                 }
                 else
                 {
-                    systemId = new CustomerHelper().GetSystemId(emailId, password);
-                    CustomerRelationshipModule.Site.currentUserId = systemId;
-                    CustomerRelationshipModule.Site.currentUserType = "Customer";
+                    currentUserId = new CustomerHelper().GetSystemId(emailId, password);
+                    CustomerRelationshipModule.Site.currentUserId = currentUserId;
+                    currentUserType = "Customer";
+                    CustomerRelationshipModule.Site.currentUserType = currentUserType;
                 }
 
-                if (string.IsNullOrEmpty(systemId))
+                if (string.IsNullOrEmpty(currentUserId))
                 {
                     result.isSuccess = false;
                 }
                 else
                 {
                     result.isSuccess = true;
-                    result.data = new Models.Employee()
+                    result.data = new
                     {
-                        systemId = systemId
+                        currentUserId = currentUserId,
+                        currentUserType = currentUserType,
                     };
                 }
             }

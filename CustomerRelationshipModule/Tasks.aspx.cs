@@ -36,7 +36,8 @@ namespace CustomerRelationshipModule
 
                 if (currentUserType == "Customer")
                 {
-                    task = task.Where(p => p.project_id == int.Parse(currentUserId)).ToList();
+                    var customer = new CustomerHelper().GetCustomer(currentUserId);
+                    task = task.Where(p => p.Project.customer_id == customer.id).ToList();
                 }
                 else if (!new EmployeeHelper().IsAdmin(currentUserId))
                 {
