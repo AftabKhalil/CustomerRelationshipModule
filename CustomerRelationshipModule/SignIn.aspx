@@ -2,22 +2,20 @@
 
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
     <div class="container">
-        <div class="row">
-            <form>
-                <div class="form-group">
-                    <label for="email">Email address</label>
-                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" />
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" placeholder="Password" />
-                </div>
-                <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="customer" />
-                    <label class="form-check-label" for="exampleCheck1">I am a Customer</label>
-                </div>
-                <span class="btn btn-primary" onclick="getSystemId()">Submit</span>
-            </form>
+        <div class="form">
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" />
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="Password" />
+            </div>
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="customer" />
+                <label class="form-check-label" for="exampleCheck1">I am a Customer</label>
+            </div>
+            <span class="btn btn-primary" onclick="getSystemId()">Submit</span>
         </div>
     </div>
     <script>

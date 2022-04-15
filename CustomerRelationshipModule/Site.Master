@@ -24,16 +24,12 @@
 
 </head>
 <body>
-
     <form runat="server">
-
-
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-
                 <ul class="navbar-nav">
                     <asp:Repeater runat="server" ID="menu" OnItemDataBound="rptMenu_ItemDataBound">
                         <ItemTemplate>
@@ -43,16 +39,13 @@
                         </ItemTemplate>
                     </asp:Repeater>
                 </ul>
-                <asp:SiteMapDataSource ID="SiteMapDataSource1"
-                    runat="server" ShowStartingNode="false" />
+                <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" ShowStartingNode="false" />
             </div>
         </nav>
         <div id="navigation">
         </div>
-
+        <asp:ContentPlaceHolder ID="MainContent" runat="server">
+        </asp:ContentPlaceHolder>
     </form>
-
-    <asp:ContentPlaceHolder ID="MainContent" runat="server">
-    </asp:ContentPlaceHolder>
 </body>
 </html>

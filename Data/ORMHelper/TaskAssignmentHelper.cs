@@ -8,6 +8,13 @@ namespace Data.ORMHelper
 {
     public class TaskAssignmentHelper
     {
+        public List<TaskAssignment> GetTaskAssignmetForSentimentExcel()
+        {
+            var db = new CRMEntities();
+            var taskAssignments = db.TaskAssignments.ToList();
+            return taskAssignments;
+        }
+
         public List<TaskAssignment> GetTaskAssignments(int taskId)
         {
             var db = new CRMEntities();
