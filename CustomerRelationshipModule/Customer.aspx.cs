@@ -28,7 +28,7 @@ namespace CustomerRelationshipModule
                 var currentUserTpe = HttpContext.Current.Request.Params["currentUserType"];
                 var customerId = HttpContext.Current.Request.Params["customerId"];
 
-                if (currentUserTpe == "Employee")
+                if (currentUserTpe == "Admin" || currentUserTpe == "Customer")
                 {
                     var customer = new CustomerHelper().GetCustomer(customerId);
                     if (customer == null)
@@ -56,7 +56,7 @@ namespace CustomerRelationshipModule
                     }
 
                 }
-                else if (currentUserTpe == "Customer")
+                else if (currentUserTpe == "Employee")
                 {
                     throw new Exception("Only admin user can view this page");
                 }

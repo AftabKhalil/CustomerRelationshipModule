@@ -11,8 +11,10 @@ namespace CustomerRelationshipModule.Models
 
         public string AssignmentType { get; set; }
         public string EmployeeId { get; set; }
+        public string EmployeeSystemId { get; set; }
         public string EmployeeName { get; set; }
         public string Review { get; set; }
         public string Rating { get; set; }
+        public bool IsCompleted { get; set; }
     }
 }

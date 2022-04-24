@@ -57,6 +57,7 @@
           <Property Name="task_type" Type="int" Nullable="false" />
           <Property Name="message" Type="varchar(max)" Nullable="false" />
           <Property Name="sentiment" Type="int" Nullable="false" />
+          <Property Name="is_completed" Type="bit" Nullable="false" />
         </EntityType>
         <Association Name="FK_Project_Customer">
           <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
@@ -240,6 +241,7 @@
           <Property Name="sentiment" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Employee" Relationship="CRMModel.FK_TaskAssignment_Employee" FromRole="TaskAssignment" ToRole="Employee" />
           <NavigationProperty Name="Task" Relationship="CRMModel.FK_TaskAssignment_Task" FromRole="TaskAssignment" ToRole="Task" />
+          <Property Name="is_completed" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_TaskAssignment_Employee">
           <End Type="CRMModel.Employee" Role="Employee" Multiplicity="1" />
@@ -320,6 +322,7 @@
           <EntitySetMapping Name="TaskAssignments">
             <EntityTypeMapping TypeName="CRMModel.TaskAssignment">
               <MappingFragment StoreEntitySet="TaskAssignment">
+                <ScalarProperty Name="is_completed" ColumnName="is_completed" />
                 <ScalarProperty Name="sentiment" ColumnName="sentiment" />
                 <ScalarProperty Name="message" ColumnName="message" />
                 <ScalarProperty Name="task_type" ColumnName="task_type" />

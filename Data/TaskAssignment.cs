@@ -20,6 +20,7 @@ namespace Data
         public int task_type { get; set; }
         public string message { get; set; }
         public int sentiment { get; set; }
+        public bool is_completed { get; set; }
     
         public virtual Employee Employee { get; set; }
         public virtual Task Task { get; set; }

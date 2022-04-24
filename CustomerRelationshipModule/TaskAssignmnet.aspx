@@ -166,7 +166,7 @@
                             var actions = '---';
                             if (currentUserType == 'Admin')
                                 actions = '<span class="btn btn-success" onclick="editTaskAssignmnet(' + index + ')">Edit</span>&nbsp;&nbsp;<span class="btn btn-danger" onclick="deleteTaskAssignmnet(' + index + ')">Delete</span>';
-                            else if (currentUserType == 'Customer')
+                            else
                                 actions = '<span class="btn btn-success" onclick="editTaskAssignmnet(' + index + ')">Edit</span>';
                             return actions;
                         }

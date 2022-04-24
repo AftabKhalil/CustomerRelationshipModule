@@ -26,10 +26,10 @@ namespace CustomerRelationshipModule
             try
             {
                 var currentUserId = HttpContext.Current.Request.Params["currentUserId"];
-                var currentUserTpe = HttpContext.Current.Request.Params["currentUserType"];
+                var currentUserType = HttpContext.Current.Request.Params["currentUserType"];
                 var employeeId = HttpContext.Current.Request.Params["employeeId"];
 
-                if (currentUserTpe == "Employee")
+                if (currentUserType == "Admin" || currentUserType == "Employee")
                 {
                     var employee = new EmployeeHelper().GetEmployee(employeeId);
                     if (employee == null)
@@ -58,7 +58,7 @@ namespace CustomerRelationshipModule
                     }
 
                 }
-                else if (currentUserTpe == "Customer")
+                else if (currentUserType == "Customer")
                 {
                     throw new Exception("Only admin user can view this page");
                 }
@@ -103,12 +103,12 @@ namespace CustomerRelationshipModule
                 {
                     throw new Exception("Name is invalid");
                 }
-               
-                if (!int.TryParse(salary,out int resultsalary))
+
+                if (!int.TryParse(salary, out int resultsalary))
                 {
                     throw new Exception("invalid salary");
                 }
-                
+
                 if (string.IsNullOrEmpty(email) || !email.Contains("@") || email.Length < 3 || !email.Contains(".com"))
                 {
                     throw new Exception("Email is invalid");
@@ -123,7 +123,7 @@ namespace CustomerRelationshipModule
                 }
 
                 var mode = HttpContext.Current.Request.Params["mode"];
-                if (!new EmployeeHelper().IsAdmin(currentUserId)) 
+                if (!new EmployeeHelper().IsAdmin(currentUserId))
 
                 {
                     throw new Exception("Only admin user can add/edit new employess");

@@ -4,6 +4,8 @@ using Data.ORMHelper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Script.Services;
 using System.Web.Services;
@@ -41,10 +43,12 @@ namespace CustomerRelationshipModule
                 {
                     Id = taskAssingmnets.id,
                     EmployeeId = taskAssingmnets.employee_id.ToString(),
+                    EmployeeSystemId = taskAssingmnets.Employee.system_id,
                     EmployeeName = taskAssingmnets.Employee.name,
                     Rating = taskAssingmnets.sentiment.ToString(),
                     Review = taskAssingmnets.message,
                     AssignmentType = EnumExtension.ToEnum<TaskType>(taskAssingmnets.task_type).ToString(),
+                    IsCompleted = taskAssingmnets.is_completed,
                 };
 
                 result.data = converted;
@@ -76,6 +80,7 @@ namespace CustomerRelationshipModule
                 var taskAssignmentId = HttpContext.Current.Request.Params["taskAssignmentId"];
                 var review = HttpContext.Current.Request.Params["review"];
                 var rating = HttpContext.Current.Request.Params["rating"];
+                var isCompleted = HttpContext.Current.Request.Params["isCompleted"];
 
                 if (!int.TryParse(taskAssignmentId, out int TaskAssignmentId))
                     throw new Exception("No task assignment Id in request");
@@ -85,6 +90,11 @@ namespace CustomerRelationshipModule
                     if (!int.TryParse(rating, out int Rating))
                         throw new Exception("Only integer values supported for rating");
                     new TaskAssignmentHelper().EditRating(TaskAssignmentId, Rating);
+                }
+                else if (currentUserType == "Employee" && isCompleted == "true")
+                {
+                    SendEmailToCustomerForTaskCompletion(TaskAssignmentId);
+                    new TaskAssignmentHelper().MarkDone(TaskAssignmentId);
                 }
                 else if (currentUserType == "Customer")
                 {
@@ -107,6 +117,38 @@ namespace CustomerRelationshipModule
             }
             return result;
 
+        }
+
+        private static void SendEmailToCustomerForTaskCompletion(int taskAssignmentId)
+        {
+            try
+            {
+                var senderMail = "aaftabkhalil@gmail.com";
+                var senderPass = "ujcggwmmmewvspag";
+
+                var taskAssignment = new TaskAssignmentHelper().GetTaskAssignment(taskAssignmentId);
+                var project = new ProjectHelper().GetProject(taskAssignment.Task.project_id);
+                var customer = project.Customer;
+
+                MailMessage message = new MailMessage();
+                SmtpClient smtp = new SmtpClient();
+                message.From = new MailAddress(senderMail);
+                message.To.Add(new MailAddress(customer.email_id));
+                message.Subject = "Task Completion";
+                message.IsBodyHtml = true; //to make message body as html  
+                message.Body = $"<h1>Hi {customer.name},</h1><p>Your task <b>{taskAssignment.Task.name}</b> has been completed for <b>{EnumExtension.ToEnum<TaskType>(taskAssignment.task_type)}</b> by {taskAssignment.Employee.name}.";
+                smtp.Port = 587;
+                smtp.Host = "smtp.gmail.com"; //for gmail host  
+                smtp.EnableSsl = true;
+                smtp.UseDefaultCredentials = false;
+                smtp.Credentials = new NetworkCredential(senderMail, senderPass);
+                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtp.Send(message);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         #endregion
     }

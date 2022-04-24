@@ -24,7 +24,11 @@
                         <label for="rating">Rating</label>
                         <input class="form-control" type="number" min="0" max="5" id="rating" />
                     </div>
-                    <span class="btn btn-primary" onclick="SaveTaskAssignment()">Save</span>
+                    <div class="form-group">
+                        <label for="isCompleted">Is Completed</label>
+                        <input type="checkbox" id="isCompleted" />
+                    </div>
+                    <span id="save" class="btn btn-primary" onclick="SaveTaskAssignment()">Save</span>
                 </form>
             </div>
         </div>
@@ -64,7 +68,6 @@
                     return;
                 },
             });
-
         });
 
         function getTaskAssignment() {
@@ -97,13 +100,22 @@
                     $('#rating').val(data.Rating);
                     $('#rating').attr('disabled', true);
 
-                    if (currentUserType == "Admin") {
+                    $('#isCompleted').prop('checked', data.IsCompleted);
+                    $('#isCompleted').attr('disabled', true);
+
+                    if (currentUserType == "Admin" && data.IsCompleted && data.Review != "") {
                         $('#rating').attr('disabled', false);
                     }
-                    if (currentUserType == "Customer") {
+                    if (currentUserType == "Customer" && data.IsCompleted) {
                         $('#review').attr('disabled', false);
                     }
-
+                    if (currentUserType == "Employee" && currentUserId == data.EmployeeSystemId && !data.IsCompleted) {
+                        $('#isCompleted').attr('disabled', false);
+                    }
+                    if (currentUserType == "Employee" && currentUserId == data.EmployeeSystemId && data.IsCompleted) {
+                        $('#save').addClass('disabled');
+                        $('#save').removeAttr('onclick');
+                    }
                 },
                 error: function (xhr, status, error) {
                     alert(xhr.responseText);
@@ -116,6 +128,7 @@
         function SaveTaskAssignment() {
             var review = $('#review').val();
             var rating = $('#rating').val();
+            var isCompleted = $('#isCompleted').prop('checked');
 
             $.ajax({
                 url: "EditTaskAssignment.aspx/Save",
@@ -128,6 +141,7 @@
                     taskAssignmentId: taskAssignmentId,
                     review: review,
                     rating: rating,
+                    isCompleted: isCompleted
                 },
                 success: function (result) {
                     console.log(result);
