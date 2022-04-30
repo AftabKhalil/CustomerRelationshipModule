@@ -21,7 +21,7 @@ namespace CustomerRelationshipModule
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
         public static object GetProject()
-        
+
         {
             var result = new Models.AjaxResponse<Models.Project>();
             try
@@ -43,8 +43,8 @@ namespace CustomerRelationshipModule
                             Name = project.name,
                             Budget = project.budget,
                             CustomerName = project.Customer.name,
-                            CustomerId=project.customer_id,
-                          
+                            CustomerId = project.customer_id,
+
                         };
                     }
                     else
@@ -99,11 +99,13 @@ namespace CustomerRelationshipModule
                     var projectId = HttpContext.Current.Request.Params["projectId"];
                     var project = new ProjectHelper().Update(int.Parse(projectId), projectname, int.Parse(budget), int.Parse(customerId));
                     result.data = $"Project updated with name {project.name}";
+                    Utils.EmailHelper.SendProjectAddUpdateEmail(int.Parse(customerId), projectname, budget);
                 }
                 else
                 {
                     var project = new ProjectHelper().Add(projectname, int.Parse(budget), int.Parse(customerId));
                     result.data = $"New project added with name {project.name}";
+                    Utils.EmailHelper.SendProjectAddUpdateEmail(int.Parse(customerId), projectname, budget);
                 }
                 result.isSuccess = true;
             }

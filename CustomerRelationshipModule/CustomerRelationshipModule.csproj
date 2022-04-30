@@ -219,6 +219,7 @@
     <Compile Include="Tasks.aspx.designer.cs">
       <DependentUpon>Tasks.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Utils\EmailHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,5 +1,6 @@
 ﻿using Common.Utils;
 using CustomerRelationshipModule.Models;
+using CustomerRelationshipModule.Utils;
 using Data.ORMHelper;
 using System;
 using System.Collections.Generic;
@@ -88,6 +89,7 @@ namespace CustomerRelationshipModule
                 }
 
                 var task = new TaskAssignmentHelper().Add(employeeId, taskId, assignmentType);
+                EmailHelper.SendEmailForTaskAssignmentCreation(employeeId, taskId, assignmentType);
                 result.data = $"New task assignment added";
 
                 result.isSuccess = true;

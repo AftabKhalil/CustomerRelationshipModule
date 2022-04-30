@@ -41,6 +41,12 @@ namespace Data.ORMHelper
             var employee = db.Employees.FirstOrDefault(e => e.system_id == systemId);
             return employee;
         }
+        public Employee GetEmployee(int employeeId)
+        {
+            var db = new CRMEntities();
+            var employee = db.Employees.FirstOrDefault(e => e.id == employeeId);
+            return employee;
+        }
 
         public void DeleteEmployee(string systemId)
         {
@@ -53,7 +59,6 @@ namespace Data.ORMHelper
             db.SaveChanges();
             db.Dispose();
         }
-
 
         public Employee GetEmployeeByEmail(string emailId)
         {
@@ -104,6 +109,5 @@ namespace Data.ORMHelper
             db.Dispose();
             return e;
         }
-
     }
 }

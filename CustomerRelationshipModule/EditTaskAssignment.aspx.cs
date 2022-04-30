@@ -1,5 +1,6 @@
 ﻿using Common.Utils;
 using CustomerRelationshipModule.Models;
+using CustomerRelationshipModule.Utils;
 using Data.ORMHelper;
 using System;
 using System.Collections.Generic;
@@ -93,7 +94,7 @@ namespace CustomerRelationshipModule
                 }
                 else if (currentUserType == "Employee" && isCompleted == "true")
                 {
-                    SendEmailToCustomerForTaskCompletion(TaskAssignmentId);
+                    EmailHelper.SendEmailToCustomerForTaskCompletion(TaskAssignmentId);
                     new TaskAssignmentHelper().MarkDone(TaskAssignmentId);
                 }
                 else if (currentUserType == "Customer")
@@ -117,38 +118,6 @@ namespace CustomerRelationshipModule
             }
             return result;
 
-        }
-
-        private static void SendEmailToCustomerForTaskCompletion(int taskAssignmentId)
-        {
-            try
-            {
-                var senderMail = "aaftabkhalil@gmail.com";
-                var senderPass = "ujcggwmmmewvspag";
-
-                var taskAssignment = new TaskAssignmentHelper().GetTaskAssignment(taskAssignmentId);
-                var project = new ProjectHelper().GetProject(taskAssignment.Task.project_id);
-                var customer = project.Customer;
-
-                MailMessage message = new MailMessage();
-                SmtpClient smtp = new SmtpClient();
-                message.From = new MailAddress(senderMail);
-                message.To.Add(new MailAddress(customer.email_id));
-                message.Subject = "Task Completion";
-                message.IsBodyHtml = true; //to make message body as html  
-                message.Body = $"<h1>Hi {customer.name},</h1><p>Your task <b>{taskAssignment.Task.name}</b> has been completed for <b>{EnumExtension.ToEnum<TaskType>(taskAssignment.task_type)}</b> by {taskAssignment.Employee.name}.";
-                smtp.Port = 587;
-                smtp.Host = "smtp.gmail.com"; //for gmail host  
-                smtp.EnableSsl = true;
-                smtp.UseDefaultCredentials = false;
-                smtp.Credentials = new NetworkCredential(senderMail, senderPass);
-                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-                smtp.Send(message);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
         }
         #endregion
     }

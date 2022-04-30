@@ -1,4 +1,5 @@
-﻿using Data.ORMHelper;
+﻿using CustomerRelationshipModule.Utils;
+using Data.ORMHelper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -83,11 +84,13 @@ namespace CustomerRelationshipModule
                     var taskId = HttpContext.Current.Request.Params["taskId"];
                     var task = new TaskHelper().Update(int.Parse(taskId), TaskName, int.Parse(projectId));
                     result.data = $"task updated with name {task.name}";
+                    EmailHelper.SendEmailForTaskAddUpdate(int.Parse(projectId), task.name);
                 }
                 else
                 {
                     var task = new TaskHelper().Add(TaskName, int.Parse(projectId));
                     result.data = $"New task added with name {task.name}";
+                    EmailHelper.SendEmailForTaskAddUpdate(int.Parse(projectId), task.name);
                 }
                 result.isSuccess = true;
             }

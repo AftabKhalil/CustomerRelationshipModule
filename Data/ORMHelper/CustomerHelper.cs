@@ -36,6 +36,13 @@ namespace Data.ORMHelper
             var customer = db.Customers.FirstOrDefault(e => e.system_id == systemId);
             return customer;
         }
+        public Customer GetCustomer(int customerId)
+        {
+            var db = new CRMEntities();
+            var customer = db.Customers.FirstOrDefault(e => e.id == customerId);
+            return customer;
+        }
+
 
         public void DeleteCustomer(string systemId)
         {

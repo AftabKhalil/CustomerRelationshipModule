@@ -1,4 +1,5 @@
-﻿using Data.ORMHelper;
+﻿using CustomerRelationshipModule.Utils;
+using Data.ORMHelper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +47,7 @@ namespace CustomerRelationshipModule
 
                             name = customer.name,
                             password = customer.password,
-                            
+
                             systemId = customer.system_id,
                         };
                     }
@@ -127,6 +128,7 @@ namespace CustomerRelationshipModule
                     }
                     var customer = new CustomerHelper().Update(customerId, name, contactNo, email);
                     result.data = $"Customer updated with system Id: {customer.system_id}";
+                    EmailHelper.SendCustomerAddUpdateEmail(email, name, password);
                 }
                 else
                 {
@@ -137,6 +139,7 @@ namespace CustomerRelationshipModule
 
                     var customer = new CustomerHelper().Add(name, contactNo, email, password);
                     result.data = $"New emplyee added with system Id: {customer.system_id}";
+                    EmailHelper.SendCustomerAddUpdateEmail(email, name, password);
                 }
                 result.isSuccess = true;
             }
