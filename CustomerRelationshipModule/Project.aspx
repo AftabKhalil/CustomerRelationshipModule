@@ -35,7 +35,6 @@
 
 
         $(document).ready(function () {
-            debugger;
             $.ajax({
                 
                 url: "Customers.aspx/GetCustomers",

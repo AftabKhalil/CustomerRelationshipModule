@@ -30,37 +30,25 @@ namespace CustomerRelationshipModule
                 var currentUserTpe = HttpContext.Current.Request.Params["currentUserType"];
                 var projectId = int.Parse(HttpContext.Current.Request.Params["projectId"]);
 
-                if (currentUserTpe == "Employee")
+                if (currentUserTpe == "Admin")
                 {
-                    if (new EmployeeHelper().IsAdmin(currentUserId))
+                    var project = new ProjectHelper().GetProject(projectId);
+
+                    result.data = new Models.Project()
                     {
-                        var project = new ProjectHelper().GetProject(projectId);
+                        ID = project.id,
 
-                        result.data = new Models.Project()
-                        {
-                            ID = project.id,
-
-                            Name = project.name,
-                            Budget = project.budget,
-                            CustomerName = project.Customer.name,
-                            CustomerId = project.customer_id,
-
-                        };
-                    }
-                    else
-                    {
-                        throw new Exception("Only admin can view this page");
-                    }
-
-                }
-                else if (currentUserTpe == "Customer")
-                {
-                    throw new Exception("Only admin user can view this page");
+                        Name = project.name,
+                        Budget = project.budget,
+                        CustomerName = project.Customer.name,
+                        CustomerId = project.customer_id,
+                    };
                 }
                 else
                 {
-                    throw new Exception("User type not supported");
+                    throw new Exception("Only admin user can view this page");
                 }
+
                 result.isSuccess = true;
             }
             catch (Exception ex)

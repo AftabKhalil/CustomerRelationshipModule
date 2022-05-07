@@ -22,10 +22,33 @@
 
     <script src="Assits/Custom.js"></script>
 
+    <style>
+        body {
+            background: #f4f4f4
+        }
+
+        .container {
+            max-width: 100%;
+            margin-top: 15px;
+        }
+
+        .nav-item {
+            border-right: 2px solid #878787;
+            padding: 0px 7px 0px 7px;
+        }
+
+        .table-bordered {
+            border: 1px solid #000000;
+        }
+
+            .table-bordered td, .table-bordered th {
+                border: 1px solid #b1aeae;
+            }
+    </style>
 </head>
 <body>
     <form runat="server">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -34,7 +57,7 @@
                     <asp:Repeater runat="server" ID="menu" OnItemDataBound="rptMenu_ItemDataBound">
                         <ItemTemplate>
                             <li class="nav-item active">
-                                <asp:HyperLink runat="server" CssClass="nav-link" NavigateUrl='<%# Eval("Url") %>'>' <%# Eval("Title") %></asp:HyperLink>
+                                <asp:HyperLink runat="server" CssClass="nav-link" NavigateUrl='<%# Eval("Url") %>'><%# Eval("Title") %></asp:HyperLink>
                             </li>
                         </ItemTemplate>
                     </asp:Repeater>

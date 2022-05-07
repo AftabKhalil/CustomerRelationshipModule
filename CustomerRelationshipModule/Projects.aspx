@@ -99,7 +99,6 @@
         });
 
         function editProject(i) {
-            debugger;
             var d = data[i];
             window.location = '/Project.aspx?projectId=' + d.ID;
         }
