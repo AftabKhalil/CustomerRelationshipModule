@@ -31,8 +31,8 @@
                 </table>
             </div>
         </div>
+        <h3>Add new assignment</h3>
         <div class="row" id="addAssignmentDiv">
-            <h3>Add new assignment</h3>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 Live_feed_grid_view_logs">
                 <form class="form-inline">
                     <div class="form-group" style="padding-right: 20px;">
